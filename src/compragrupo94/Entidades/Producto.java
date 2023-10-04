@@ -4,7 +4,7 @@ package compragrupo94.Entidades;
 
 public class Producto {
     private int idProducto ;
-    private String nombrePorducto ;
+    private String nombreProducto ;
     private String descripcion ;
     private double precioActual;
     private int stock ;
@@ -13,17 +13,17 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(int idProducto, String nombrePorducto, String descripcion, double precioActual, int stock, boolean estado) {
+    public Producto(int idProducto, String nombreProducto, String descripcion, double precioActual, int stock, boolean estado) {
         this.idProducto = idProducto;
-        this.nombrePorducto = nombrePorducto;
+        this.nombreProducto = nombreProducto;
         this.descripcion = descripcion;
         this.precioActual = precioActual;
         this.stock = stock;
         this.estado = estado;
     }
 
-    public Producto(String nombrePorducto, String descripcion, double precioActual, int stock, boolean estado) {
-        this.nombrePorducto = nombrePorducto;
+    public Producto(String nombreProducto, String descripcion, double precioActual, int stock, boolean estado) {
+        this.nombreProducto = nombreProducto;
         this.descripcion = descripcion;
         this.precioActual = precioActual;
         this.stock = stock;
@@ -38,12 +38,12 @@ public class Producto {
         this.idProducto = idProducto;
     }
 
-    public String getNombrePorducto() {
-        return nombrePorducto;
+    public String getNombreProducto() {
+        return nombreProducto;
     }
 
-    public void setNombrePorducto(String nombrePorducto) {
-        this.nombrePorducto = nombrePorducto;
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
     }
 
     public String getDescripcion() {

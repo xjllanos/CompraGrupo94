@@ -3,7 +3,9 @@ package compragrupo94;
 
 import compragrupo94.AccesoADatos.Conexion;
 import compragrupo94.AccesoADatos.ProductoData;
+import compragrupo94.AccesoADatos.ProveedorData;
 import compragrupo94.Entidades.Producto;
+import compragrupo94.Entidades.Provedor;
 import java.sql.Connection;
 
 
@@ -33,6 +35,7 @@ public class CompraGrupo94 {
         }
         */
         
+        /*
         System.out.println(" ORDEN POR PRECIO ACTUAL : ");
         for (Producto producto: prod.productosMinimo("precioActual")){
             System.out.println("Producto: " + producto.getNombreProducto() 
@@ -49,6 +52,29 @@ public class CompraGrupo94 {
                     + " - Stock: " + producto.getStock());
         }
         System.out.println(" ------------------------------------------ ");
+        */
+        
+        //***** PROVEEDOR *****
+        Provedor prov = new Provedor (1,"Compusystems", "Belgrano 111",266477777,true);
+        ProveedorData provd = new ProveedorData(); 
+        
+        //provd.guardarProveedor(prov); //FUNCIONA
+        //provd.modificarProveedor(prov); //FUNCIONA
+        //provd.eliminarProveedor(6); //FUNCIONA 
+        ProveedorData prove = new ProveedorData(); 
+        for (Provedor proveedor: prove.listarProveedores()){
+            System.out.print(proveedor.getIdProveedor());
+            System.out.print(" - ");
+            System.out.print(proveedor.getRazonSocial());
+            System.out.print(" - ");
+            System.out.print(proveedor.getDomicilio());
+            System.out.print(" - ");
+            System.out.println(proveedor.getTelefono());
+        }
+
+
+
+
     }
     
 }

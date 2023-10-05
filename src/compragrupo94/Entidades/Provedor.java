@@ -7,21 +7,24 @@ public class Provedor {
     private String razonSocial ;
     private String domicilio ;
     private int telefono ; 
-
+    private boolean estado; 
+    
     public Provedor() {
     }
 
-    public Provedor(int idProveedor, String razonSocial, String domicilio, int telefono) {
+    public Provedor(int idProveedor, String razonSocial, String domicilio, int telefono, boolean estado) {
         this.idProveedor = idProveedor;
         this.razonSocial = razonSocial;
         this.domicilio = domicilio;
         this.telefono = telefono;
+        this.estado = estado;
     }
 
-    public Provedor(String razonSocial, String domicilio, int telefono) {
+    public Provedor(String razonSocial, String domicilio, int telefono, boolean estado) {
         this.razonSocial = razonSocial;
         this.domicilio = domicilio;
         this.telefono = telefono;
+        this.estado = estado;
     }
 
     public int getIdProveedor() {
@@ -55,6 +58,13 @@ public class Provedor {
     public void setTelefono(int telefono) {
         this.telefono = telefono;
     }
-    
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
     
 }

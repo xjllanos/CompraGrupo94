@@ -1,12 +1,15 @@
 
 package compragrupo94;
 
+import compragrupo94.AccesoADatos.CompraData;
 import compragrupo94.AccesoADatos.Conexion;
 import compragrupo94.AccesoADatos.ProductoData;
 import compragrupo94.AccesoADatos.ProveedorData;
+import compragrupo94.Entidades.Compras;
 import compragrupo94.Entidades.Producto;
 import compragrupo94.Entidades.Provedor;
 import java.sql.Connection;
+import java.time.LocalDate;
 
 
 public class CompraGrupo94 {
@@ -14,17 +17,19 @@ public class CompraGrupo94 {
     
     public static void main(String[] args) {
         Connection con = Conexion.getConexion(); 
+        //****PRODUCTO*****//
         //Producto pro = new Producto (6,"Gamer Masterbox MB320L", "Gabinete Gamer",85.000,5,true);
         //ProductoData pd = new ProductoData (); 
         
-        //pd.guardarProducto(pro); FUNCIONA
         
-        //pd.modificarProducto(pro); FUNCIONA DE 80 PASO A "85" Y EL STOCK DE 4 PASO A "5"   
+        //pd.guardarProducto(pro); //FUNCIONA
+        
+        //pd.modificarProducto(pro); //FUNCIONA DE 80 PASO A "85" Y EL STOCK DE 4 PASO A "5"   
        
-        //pd.eliminarProducto(6); FUNCIONA IdProducto "6" PASO A ESTADO 0  
+        //pd.eliminarProducto(6); //FUNCIONA IdProducto "6" PASO A ESTADO 0  
                 
         //NUEVO "ProductoData" PARA LLAMAR A LISTA DE PRODUCTOS 
-        ProductoData prod = new ProductoData (); 
+   
         /*
         for (Producto producto: prod.listarProductos()){
             System.out.println(producto.getNombreProducto());
@@ -54,8 +59,8 @@ public class CompraGrupo94 {
         System.out.println(" ------------------------------------------ ");
         */
         
-        //***** PROVEEDOR *****
-        Provedor prov = new Provedor (1,"Compusystems", "Belgrano 111",266477777,true);
+        //***** PROVEEDOR *****//
+        /*Provedor prov = new Provedor (1,"Compusystems", "Belgrano 111",266477777,true);
         ProveedorData provd = new ProveedorData(); 
         
         //provd.guardarProveedor(prov); //FUNCIONA
@@ -70,9 +75,26 @@ public class CompraGrupo94 {
             System.out.print(proveedor.getDomicilio());
             System.out.print(" - ");
             System.out.println(proveedor.getTelefono());
-        }
-
-
+        }*/
+        
+        
+        //*****COMPRAS*****//
+        Compras pro = new Compras (4,6,LocalDate.of(2020, 05, 23));
+        CompraData pd = new CompraData ();
+        
+        
+        //pd.AgregarCompra(pro);//FUNCIONA
+        
+        //pd.modificarCompra(pro);//FUNCIONA
+       
+        //pd.eliminarCompra(3); //FUNCIONA 
+         
+        
+        //*****Buscar compras*****// 
+        /*CompraData com = new CompraData();
+        for(Compras compra: com.buscarComprasPorFecha(LocalDate.of(2023, 4, 23))){
+            System.out.println("idProveedor: "+ compra.getIdProvedor());
+        };*/
 
 
     }

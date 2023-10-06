@@ -46,6 +46,9 @@ public class Compras {
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
-    
+    @Override
+    public String toString() {
+        return "idCompra: "+ idCompra +" idProveedor: "+ idProvedor + " fecha: " + fecha ;
+    }
     
 }

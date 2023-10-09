@@ -141,7 +141,7 @@ public class Compras extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
-        jMenu4.setText("Detalle de Compas");
+        jMenu4.setText("Detalle de Compras");
 
         jMenuItem4.setText("Formulario de detalle");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {

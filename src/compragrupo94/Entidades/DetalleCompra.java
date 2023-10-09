@@ -27,6 +27,10 @@ public class DetalleCompra {
         this.idProducto = idProducto;
     }
 
+    public DetalleCompra(int aInt, int aInt0, int aInt1, int aInt2, int aInt3, int aInt4) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public int getIdDetalle() {
         return idDetalle;
     }
@@ -65,6 +69,10 @@ public class DetalleCompra {
 
     public void setIdProducto(int idProducto) {
         this.idProducto = idProducto;
+    }
+
+    public int getIdProveedor() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

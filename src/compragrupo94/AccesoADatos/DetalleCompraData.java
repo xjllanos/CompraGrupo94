@@ -3,98 +3,58 @@ package compragrupo94.AccesoADatos;
 
 import compragrupo94.Entidades.DetalleCompra;
 import java.sql.Connection;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.sql.SQLException;
 
 public class DetalleCompraData {
 
-public class DetalleCompraDAO {
-   private Connection connection;
+    private List<DetalleCompra> detallesCompra;
+    private Connection con;
 
-
-    public List<DetalleCompra> productoFechaDeterminada(Date fecha) throws SQLException {
-        List<DetalleCompra> detalles = new ArrayList<>();
-        String sql = "SELECT * FROM DetalleCompra WHERE fecha = ?";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setDate(1, fecha);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            DetalleCompra detalle = new DetalleCompra(
-                resultSet.getInt("idDetalle"),
-                resultSet.getInt("cantidad"),
-                resultSet.getDouble("precioCosto"),
-                resultSet.getInt("idCompra"),
-                resultSet.getInt("idProducto")
-            );
-            detalles.add(detalle);
-        }
-        return detalles;
+    public DetalleCompraData() {
+        con = Conexion.getConexion();
+        detallesCompra = new ArrayList<>(); 
     }
 
-    public List<DetalleCompra> ProductoPorProveedor(int proveedorId) throws SQLException {
-        List<DetalleCompra> detalles = new ArrayList<>();
-        String sql = "SELECT d.* FROM DetalleCompra d " +
-                     "JOIN Compra c ON d.idCompra = c.idCompra " +
-                     "JOIN Proveedor p ON c.idProveedor = p.idProveedor " +
-                     "WHERE p.idProveedor = ?";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, proveedorId);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            DetalleCompra detalle = new DetalleCompra(
-                resultSet.getInt("idDetalle"),
-                resultSet.getInt("cantidad"),
-                resultSet.getDouble("precioCosto"),
-                resultSet.getInt("idCompra"),
-                resultSet.getInt("idProducto")
-            );
-            detalles.add(detalle);
+    public List<DetalleCompra> ProductoPorProveedor(int idProveedor) {
+        List<DetalleCompra> detallesPorProveedor = new ArrayList<>();
+        for (DetalleCompra detalle : detallesCompra) {
+            if (detalle.getIdProveedor() == idProveedor) {
+                detallesPorProveedor.add(detalle);
+            }
         }
-        return detalles;
+        return detallesPorProveedor;
     }
 
-    public List<DetalleCompra> ProductoPorCompra(int compraId) throws SQLException {
-        List<DetalleCompra> detalles = new ArrayList<>();
-        String sql = "SELECT * FROM DetalleCompra WHERE idCompra = ?";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, compraId);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            DetalleCompra detalle = new DetalleCompra(
-                resultSet.getInt("idDetalle"),
-                resultSet.getInt("cantidad"),
-                resultSet.getDouble("precioCosto"),
-                resultSet.getInt("idCompra"),
-                resultSet.getInt("idProducto")
-            );
-            detalles.add(detalle);
+    public List<DetalleCompra> ProductoPorCompra(int idCompra) {
+        List<DetalleCompra> detallesPorCompra = new ArrayList<>();
+        for (DetalleCompra detalle : detallesCompra) {
+            if (detalle.getIdCompra() == idCompra) {
+                detallesPorCompra.add(detalle);
+            }
         }
-        return detalles;
+        return detallesPorCompra;
     }
 
-    public List<DetalleCompra> ProductoEntreFechas(Date fechaInicio, Date fechaFin) throws SQLException {
-        List<DetalleCompra> detalles = new ArrayList<>();
-        String sql = "SELECT d.* FROM DetalleCompra d " +
-                     "JOIN Compra c ON d.idCompra = c.idCompra " +
-                     "WHERE c.fecha BETWEEN ? AND ?";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setDate(1, fechaInicio);
-        statement.setDate(2, fechaFin);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            DetalleCompra detalle = new DetalleCompra(
-                resultSet.getInt("idDetalle"),
-                resultSet.getInt("cantidad"),
-                resultSet.getDouble("precioCosto"),
-                resultSet.getInt("idCompra"),
-                resultSet.getInt("idProducto")
-            );
-            detalles.add(detalle);
+    public double PrecioFinal(int idCompra) {
+        double precioFinal = 0.0;
+        for (DetalleCompra detalle : detallesCompra) {
+            if (detalle.getIdCompra() == idCompra) {
+                precioFinal += detalle.getPrecioCosto() * detalle.getCantidad();
+            }
         }
-        return detalles;
+        return precioFinal;
+    }
+
+    public int CantidadesProducto(int idProducto) {
+        int totalCantidad = 0;
+        for (DetalleCompra detalle : detallesCompra) {
+            if (detalle.getIdProducto() == idProducto) {
+                totalCantidad += detalle.getCantidad();
+            }
+        }
+        return totalCantidad;
     }
 }
-}
-
+ 

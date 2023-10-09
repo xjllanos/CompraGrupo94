@@ -3,19 +3,26 @@ package compragrupo94;
 
 import compragrupo94.AccesoADatos.CompraData;
 import compragrupo94.AccesoADatos.Conexion;
+import compragrupo94.AccesoADatos.DetalleCompraData;
 import compragrupo94.AccesoADatos.ProductoData;
 import compragrupo94.AccesoADatos.ProveedorData;
 import compragrupo94.Entidades.Compras;
+import compragrupo94.Entidades.DetalleCompra;
 import compragrupo94.Entidades.Producto;
 import compragrupo94.Entidades.Provedor;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 
 public class CompraGrupo94 {
+    
+
 
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         Connection con = Conexion.getConexion(); 
         //****PRODUCTO*****//
         //Producto pro = new Producto (6,"Gamer Masterbox MB320L", "Gabinete Gamer",85.000,5,true);
@@ -79,8 +86,8 @@ public class CompraGrupo94 {
         
         
         //*****COMPRAS*****//
-        Compras pro = new Compras (4,6,LocalDate.of(2020, 05, 23));
-        CompraData pd = new CompraData ();
+        //Compras pro = new Compras (4,6,LocalDate.of(2020, 05, 23));
+        //CompraData pd = new CompraData ();
         
         
         //pd.AgregarCompra(pro);//FUNCIONA
@@ -96,7 +103,35 @@ public class CompraGrupo94 {
             System.out.println("idProveedor: "+ compra.getIdProvedor());
         };*/
 
+                          //***DetalleCompraData***//
+                          
+         DetalleCompraData detalleCompraData = new DetalleCompraData();
 
+        // Ejemplo de cómo usar los métodos
+        List<DetalleCompra> detallesPorProveedor = detalleCompraData.ProductoPorProveedor(1); // Supongamos que 1 es el ID del proveedor
+        List<DetalleCompra> detallesPorCompra = detalleCompraData.ProductoPorCompra(1); // Supongamos que 1 es el ID de la compra
+        double precioFinal = detalleCompraData.PrecioFinal(1); // Supongamos que 1 es el ID de la compra
+        int cantidadProducto = detalleCompraData.CantidadesProducto(1); // Supongamos que 1 es el ID del producto
+
+        // Mostrar los resultados
+        System.out.println("Detalles por proveedor:");
+        for (DetalleCompra detalle : detallesPorProveedor) {
+            System.out.println(detalle.getIdDetalle() + ", " + detalle.getCantidad() + ", " + detalle.getPrecioCosto() + ", " + detalle.getIdCompra() + ", " + detalle.getIdProducto());
+        }
+
+        System.out.println("Detalles por compra:");
+        for (DetalleCompra detalle : detallesPorCompra) {
+            System.out.println(detalle.getIdDetalle() + ", " + detalle.getCantidad() + ", " + detalle.getPrecioCosto() + ", " + detalle.getIdCompra() + ", " + detalle.getIdProducto());
+        }
+
+        System.out.println("Precio Final: " + precioFinal);
+        System.out.println("Cantidad de producto: " + cantidadProducto);
     }
+}  
     
-}
+
+  
+
+    
+    
+

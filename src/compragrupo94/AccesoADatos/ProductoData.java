@@ -21,8 +21,8 @@ public class ProductoData {
         con = Conexion.getConexion(); 
     }
     
-    public void guardarProducto ( Producto producto){
-    
+    public boolean guardarProducto ( Producto producto){
+        boolean resultado = false ; 
         String sql = "INSERT INTO producto (nombreProducto, descripcion, precioActual, stock, estado)"
                 + "VALUES (?, ?, ?, ?, ?)"; 
         
@@ -40,15 +40,18 @@ public class ProductoData {
             if (rs.next()){
                 producto.setIdProducto(rs.getInt(1));
                 JOptionPane.showMessageDialog(null, " Producto guardado ");
+                resultado = true ; 
             }
             ps.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, " Error al cargar los drivers ");
         }
+        return resultado ; 
     }
     
-    public void modificarProducto ( Producto producto ){
+    public boolean modificarProducto ( Producto producto ){
     
+        boolean resultado = false;
         String sql="UPDATE producto SET  nombreProducto= ?, descripcion = ?, precioActual = ?, stock= ?,estado = ? "
                 + "WHERE idProducto = ? ";
         
@@ -64,15 +67,17 @@ public class ProductoData {
             
             if(exito==1){
                 
-            JOptionPane.showMessageDialog(null, " Producto modificado ");    
+                JOptionPane.showMessageDialog(null, " Producto modificado ");    
+                resultado = true;
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, " Error al acceder a la tabla producto " );
         }
+        return resultado;
     }
     
-    public void eliminarProducto ( int id ) {
-    
+    public boolean eliminarProducto ( int id ) {
+        boolean resultado = false ; 
         String sql="UPDATE producto SET estado = 0 WHERE idProducto = ?";
         
         try {
@@ -81,13 +86,14 @@ public class ProductoData {
             int exito = ps.executeUpdate();
             if(exito==1){
                 
-            JOptionPane.showMessageDialog(null, " Producto eliminado ");    
+                JOptionPane.showMessageDialog(null, " Producto eliminado ");
+                resultado = true ; 
             }
             
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, " Error al acceder a la tabla alumno");
         }
-    
+        return resultado ;
     }
     
     public List<Producto> listarProductos(){
@@ -106,6 +112,7 @@ public class ProductoData {
                 producto.setNombreProducto(rs.getString("nombreProducto"));
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecioActual(rs.getDouble("precioActual"));
+                producto.setStock(rs.getInt("stock"));
                 producto.setEstado(true);
                 productos.add(producto);
             }

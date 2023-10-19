@@ -17,11 +17,11 @@ public class ProveedorData {
     private Connection con =null;
     
     public ProveedorData(){
-    
         con = Conexion.getConexion(); 
     }
     
-    public void guardarProveedor (Provedor proveedor){
+    public boolean guardarProveedor (Provedor proveedor){
+        boolean resultado = false;
         String sql = "INSERT INTO proveedor (razonSocial, domicilio, telefono, estado)"
                 + "VALUES (?, ?, ?, ?)";
         
@@ -43,9 +43,11 @@ public class ProveedorData {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar los Drivers.");
         }
+        return resultado;
     }
     
-    public void modificarProveedor (Provedor proveedor){
+    public boolean modificarProveedor (Provedor proveedor){
+        boolean resultado = false;
         String sql = "UPDATE proveedor SET  razonSocial = ?, domicilio = ?, telefono = ?, estado = ? "
                 + "WHERE idProveedor = ? ";
         
@@ -64,9 +66,11 @@ public class ProveedorData {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al acceder a la tabla proveedor." );
         }
+        return resultado;
     }
     
-    public void eliminarProveedor (int id) {
+    public boolean eliminarProveedor (int id) {
+        boolean resultado = false;
         String sql = "UPDATE proveedor SET estado = 0 WHERE idProveedor = ?";
         try {
             PreparedStatement ps=con.prepareStatement(sql);
@@ -78,6 +82,7 @@ public class ProveedorData {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al acceder a la tabla proveedor.");
         }
+        return resultado;
     }
     
     public List<Provedor> listarProveedores(){

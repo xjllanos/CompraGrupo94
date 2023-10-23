@@ -1,6 +1,5 @@
 
 package compragrupo94.Vistas;
-
 import compragrupo94.AccesoADatos.DetalleCompraData;
 import compragrupo94.AccesoADatos.ProveedorData;
 import compragrupo94.Entidades.DetalleCompra;
@@ -15,8 +14,9 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
-public class FormularioDetalleCompras extends javax.swing.JPanel {
- private List<DetalleCompra> detallesPorProveedor;
+
+public class FormularioDetalleCompras extends javax.swing.JInternalFrame {
+private List<DetalleCompra> detallesPorProveedor;
     private DefaultTableModel modelo;
      private DetalleCompraData detalleData;
     private List<Provedor> listaProveedores;
@@ -32,6 +32,8 @@ public class FormularioDetalleCompras extends javax.swing.JPanel {
        obtenerCostoTotal();
         cargarProveedores();
         
+                
+        
         
     }
 
@@ -41,15 +43,14 @@ public class FormularioDetalleCompras extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jboxProveedor = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jDfecha = new com.toedter.calendar.JDateChooser();
-        jBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTdetalles = new javax.swing.JTable();
         jTotal = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jBuscar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
 
         jboxProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -57,20 +58,9 @@ public class FormularioDetalleCompras extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setText("PROVEEDOR");
-
-        jLabel2.setText("FECHA DE COMPRA");
-
         jDfecha.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 jDfechaPropertyChange(evt);
-            }
-        });
-
-        jBuscar.setText("BUSCAR");
-        jBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBuscarActionPerformed(evt);
             }
         });
 
@@ -85,11 +75,6 @@ public class FormularioDetalleCompras extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTdetalles.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
-            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
-                jTdetallesMouseWheelMoved(evt);
-            }
-        });
         jTdetalles.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 jTdetallesPropertyChange(evt);
@@ -103,83 +88,88 @@ public class FormularioDetalleCompras extends javax.swing.JPanel {
             }
         });
 
-        jLabel3.setText("TOTAL");
+        jLabel1.setText("PROVEEDOR");
 
-        jButton2.setText("AGREGAR");
+        jLabel2.setText("FECHA DE COMPRA");
+
+        jBuscar.setText("BUSCAR");
+        jBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBuscarActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Costo Total");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jDfecha, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jboxProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(31, 31, 31)
-                        .addComponent(jBuscar)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)))
-                .addContainerGap())
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addGap(43, 43, 43)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jboxProveedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jDfecha, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jBuscar)
+                .addGap(106, 106, 106))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jboxProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
+                        .addGap(26, 26, 26)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jDfecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(81, 81, 81)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jboxProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jDfecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
+                        .addGap(13, 13, 13)
                         .addComponent(jBuscar)))
-                .addGap(42, 42, 42)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(jButton2))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(20, 20, 20))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jboxProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jboxProveedorActionPerformed
-         ProveedorData proveedorData = new ProveedorData();
+          ProveedorData proveedorData = new ProveedorData();
         listaProveedores = proveedorData.listarProveedores();
         
         jboxProveedor.removeAllItems(); // Limpia combox
@@ -190,7 +180,7 @@ public class FormularioDetalleCompras extends javax.swing.JPanel {
     }//GEN-LAST:event_jboxProveedorActionPerformed
 
     private void jBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBuscarActionPerformed
-         // Verifica  q la fecha y el proveedor sean  seleccionados
+        // Verifica  q la fecha y el proveedor sean  seleccionados
     if (jDfecha.getDate() != null && jboxProveedor.getSelectedItem() != null) {
         Date dateSeleccionada = (Date) jDfecha.getDate();
         Instant instant = dateSeleccionada.toInstant();
@@ -213,6 +203,16 @@ public class FormularioDetalleCompras extends javax.swing.JPanel {
                                           
     }//GEN-LAST:event_jBuscarActionPerformed
 
+    private void jDfechaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDfechaPropertyChange
+        // Verifica si tanto la fecha como el proveedor están seleccionados
+    if (jDfecha.getDate() != null && jboxProveedor.getSelectedItem() != null) {
+        jBuscar.setEnabled(true);
+    }
+    else {
+        jBuscar.setEnabled(false);
+    }
+    }//GEN-LAST:event_jDfechaPropertyChange
+
     private void jTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTotalActionPerformed
           try {
         // Llama al método para actualizar 
@@ -228,22 +228,8 @@ public class FormularioDetalleCompras extends javax.swing.JPanel {
     }
     }//GEN-LAST:event_jTotalActionPerformed
 
-    private void jDfechaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDfechaPropertyChange
-         // Verifica si tanto la fecha como el proveedor están seleccionados
-    if (jDfecha.getDate() != null && jboxProveedor.getSelectedItem() != null) {
-        jBuscar.setEnabled(true);
-    }
-    else {
-        jBuscar.setEnabled(false);
-    }
-    }//GEN-LAST:event_jDfechaPropertyChange
-
-    private void jTdetallesMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_jTdetallesMouseWheelMoved
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTdetallesMouseWheelMoved
-
     private void jTdetallesPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTdetallesPropertyChange
-       if ("tableCellEditor".equals(evt.getPropertyName())) {
+        if ("tableCellEditor".equals(evt.getPropertyName())) {
             int fila = jTdetalles.getSelectedRow();
             int columna = jTdetalles.getSelectedColumn();
             Object valor = jTdetalles.getValueAt(fila, columna);
@@ -254,7 +240,6 @@ public class FormularioDetalleCompras extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBuscar;
-    private javax.swing.JButton jButton2;
     private com.toedter.calendar.JDateChooser jDfecha;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -267,7 +252,8 @@ public class FormularioDetalleCompras extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void armarDetalles() {
-         ArrayList <Object> filaCabecera=new ArrayList<>();
+        
+        ArrayList <Object> filaCabecera=new ArrayList<>();
                 filaCabecera.add("IdProducto"); 
                 filaCabecera.add("Nombre");
                 filaCabecera.add("Descripcion");
@@ -281,9 +267,10 @@ public class FormularioDetalleCompras extends javax.swing.JPanel {
             modelo.addColumn("Costo Total"); 
            jTdetalles.setModel(modelo);
     }
+    
 
     private void actualizarCostoTotal() {
-         DefaultTableModel modelo = (DefaultTableModel) jTdetalles.getModel(); 
+        DefaultTableModel modelo = (DefaultTableModel) jTdetalles.getModel(); 
     double costoTotal = 0.0;
    
     // Itera sobre las filas de la tabla
@@ -299,10 +286,11 @@ public class FormularioDetalleCompras extends javax.swing.JPanel {
     // Actualiza campo para mostrar el costo total
     jTotal.setText(String.valueOf(costoTotal)); 
     
+    
     }
 
     private double obtenerCostoTotal() {
-        double costoTotal = 0.0;
+         double costoTotal = 0.0;
     
     for (int i = 0; i < jTdetalles.getRowCount(); i++) {
         double precio = (double) jTdetalles.getValueAt(i, 4);
@@ -314,7 +302,7 @@ public class FormularioDetalleCompras extends javax.swing.JPanel {
     }
 
     private void cargarProveedores() {
-         ProveedorData proveedorData = new ProveedorData();
+          ProveedorData proveedorData = new ProveedorData();
         listaProveedores = proveedorData.listarProveedores();
 
         jboxProveedor.removeAllItems(); // Limpia los elementos del JComboBox
@@ -361,8 +349,6 @@ public class FormularioDetalleCompras extends javax.swing.JPanel {
         modelo.addRow(fila);
     }
     
-   }  
-    
-    
+   
+    }
 }
-

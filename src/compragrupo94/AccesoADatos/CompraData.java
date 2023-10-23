@@ -6,6 +6,8 @@
 package compragrupo94.AccesoADatos;
 
 import compragrupo94.Entidades.Compras;
+import compragrupo94.Entidades.Producto;
+import compragrupo94.Entidades.Provedor;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -26,6 +28,55 @@ public class CompraData {
     
     public CompraData(){
         con = Conexion.getConexion();
+    }
+    
+    public void registrarCompra(Provedor proveedor, Producto producto, int cantidad, LocalDate fecha) {
+    // Primero, debes insertar la compra en la tabla 'compra'.
+    String sqlCompra = "INSERT INTO compra (idProvedor, fecha) VALUES (?, ?)";
+    try (PreparedStatement psCompra = con.prepareStatement(sqlCompra, Statement.RETURN_GENERATED_KEYS)) {
+        psCompra.setInt(1, proveedor.getIdProveedor());
+        psCompra.setDate(2, Date.valueOf(fecha));
+        psCompra.executeUpdate();
+        
+        ResultSet rsCompra = psCompra.getGeneratedKeys();
+        int idCompra = -1;
+        if (rsCompra.next()) {
+            idCompra = rsCompra.getInt(1);
+        }
+        
+        // Ahora, inserta los detalles de la compra en la tabla 'detallecompra'.
+        if (idCompra != -1) {
+            String sqlDetalleCompra = "INSERT INTO detallecompra (idCompra, idProducto, cantidad, precioCosto) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement psDetalleCompra = con.prepareStatement(sqlDetalleCompra)) {
+                psDetalleCompra.setInt(1, idCompra);
+                psDetalleCompra.setInt(2, producto.getIdProducto());
+                psDetalleCompra.setInt(3, cantidad);
+                psDetalleCompra.setDouble(4, producto.getPrecioActual());
+                psDetalleCompra.executeUpdate();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error al insertar detalle de compra: " + ex.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al obtener el ID de la compra.");
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al insertar la compra: " + ex.getMessage());
+    }
+}
+    public double obtenerPrecioCosto(int productoId) {
+        // Implementa aquí la consulta a la base de datos para obtener el costo unitario del producto.
+        String sql = "SELECT precioCosto FROM detallecompra WHERE idProducto = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, productoId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble("precioCosto");
+                }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al obtener el costo unitario: " + ex.getMessage());
+        }
+        return 0.0; // Devuelve 0.0 en caso de error o si no se encuentra el costo unitario.
     }
     
     public void AgregarCompra(Compras compras){

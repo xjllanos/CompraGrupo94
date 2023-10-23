@@ -1,37 +1,90 @@
+package compragrupo94.Vistas;
+
+//import com.sun.glass.events.KeyEvent;
 import compragrupo94.AccesoADatos.ProveedorData;
 import compragrupo94.Entidades.Provedor;
-
-//package compragrupo94.Vistas;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class FormularioDeProveedores extends javax.swing.JInternalFrame {
-    private int idProveedor;
-    
+    private int idProveedor ; 
+    private DefaultTableModel modelo = new DefaultTableModel();
+    private List <Provedor> proveedores = new ArrayList(); 
+    private int filaSeleccionada; 
+
     public FormularioDeProveedores() {
         initComponents();
+        armarCabecera (); 
+        cargarTabla();
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLproveedor = new javax.swing.JLabel();
-        jLRazonSocial = new javax.swing.JLabel();
-        jTRazonSocial = new javax.swing.JTextField();
-        jLDomicilio = new javax.swing.JLabel();
-        jTDomicilio = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jTEstado = new javax.swing.JRadioButton();
-        jTBuscar = new javax.swing.JButton();
-        jTGuardar = new javax.swing.JButton();
-        jTEliminar = new javax.swing.JButton();
         jLTelefono = new javax.swing.JLabel();
+        jBModificiar = new javax.swing.JButton();
+        jLEstado = new javax.swing.JLabel();
+        jBActualizar = new javax.swing.JButton();
+        jTRazonSocial = new javax.swing.JTextField();
+        jBLimpiar = new javax.swing.JButton();
+        jTDomicilio = new javax.swing.JTextField();
         jTTelefono = new javax.swing.JTextField();
-        jLId = new javax.swing.JLabel();
-        jTId = new javax.swing.JTextField();
-        jTListar = new javax.swing.JButton();
+        jREstado = new javax.swing.JRadioButton();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTablaProveedores = new javax.swing.JTable();
+        jLRazonSocial = new javax.swing.JLabel();
+        jLDomicilio = new javax.swing.JLabel();
+        jBAgregar = new javax.swing.JButton();
+        jBEliminar = new javax.swing.JButton();
 
-        jLproveedor.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
-        jLproveedor.setText("PROVEEDORES");
+        setClosable(true);
+
+        jLTelefono.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLTelefono.setText("TELEFONO:");
+
+        jBModificiar.setText("MODIFICAR");
+        jBModificiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBModificiarActionPerformed(evt);
+            }
+        });
+
+        jLEstado.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLEstado.setText("ESTADO:");
+
+        jBActualizar.setText("ACTUALIZAR");
+        jBActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBActualizarActionPerformed(evt);
+            }
+        });
+
+        jBLimpiar.setText("LIMPIAR");
+        jBLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBLimpiarActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        jLabel1.setText("PROVEEDORES");
+
+        jTablaProveedores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTablaProveedores);
 
         jLRazonSocial.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLRazonSocial.setText("RAZON SOCIAL:");
@@ -39,40 +92,17 @@ public class FormularioDeProveedores extends javax.swing.JInternalFrame {
         jLDomicilio.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLDomicilio.setText("DOMICILIO:");
 
-        jLabel5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel5.setText("ESTADO:");
-
-        jTBuscar.setText("Buscar");
-        jTBuscar.addActionListener(new java.awt.event.ActionListener() {
+        jBAgregar.setText("GUARDAR");
+        jBAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTBuscarActionPerformed(evt);
+                jBAgregarActionPerformed(evt);
             }
         });
 
-        jTGuardar.setText("Guardar");
-        jTGuardar.addActionListener(new java.awt.event.ActionListener() {
+        jBEliminar.setText("ELIMINAR");
+        jBEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTGuardarActionPerformed(evt);
-            }
-        });
-
-        jTEliminar.setText("Eliminar");
-        jTEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTEliminarActionPerformed(evt);
-            }
-        });
-
-        jLTelefono.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLTelefono.setText("TELEFONO:");
-
-        jLId.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLId.setText("ID:");
-
-        jTListar.setText("Listar");
-        jTListar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTListarActionPerformed(evt);
+                jBEliminarActionPerformed(evt);
             }
         });
 
@@ -80,138 +110,216 @@ public class FormularioDeProveedores extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(190, 190, 190)
-                .addComponent(jLproveedor)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(82, 82, 82)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLId)
-                    .addComponent(jLTelefono)
-                    .addComponent(jLabel5)
-                    .addComponent(jLDomicilio)
-                    .addComponent(jLRazonSocial))
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTId, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTEstado))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(102, Short.MAX_VALUE)
-                .addComponent(jTBuscar)
-                .addGap(26, 26, 26)
-                .addComponent(jTGuardar)
-                .addGap(27, 27, 27)
-                .addComponent(jTEliminar)
-                .addGap(27, 27, 27)
-                .addComponent(jTListar)
-                .addGap(89, 89, 89))
+                .addGap(58, 58, 58)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(91, 91, 91)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLDomicilio)
+                                    .addComponent(jLRazonSocial)
+                                    .addComponent(jLTelefono)
+                                    .addComponent(jLEstado))
+                                .addGap(40, 40, 40)
+                                .addComponent(jTRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jTTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jREstado))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jBActualizar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jBAgregar)
+                                .addGap(103, 103, 103)
+                                .addComponent(jBLimpiar))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jBModificiar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jBEliminar)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(jLproveedor)
-                .addGap(44, 44, 44)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLId)
-                    .addComponent(jTId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                .addGap(46, 46, 46)
+                .addComponent(jLabel1)
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLRazonSocial)
                     .addComponent(jTRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLDomicilio)
                     .addComponent(jTDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLTelefono)
                     .addComponent(jTTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTEstado, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(66, 66, 66)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLEstado)
+                    .addComponent(jREstado))
+                .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTEliminar)
-                    .addComponent(jTGuardar)
-                    .addComponent(jTBuscar)
-                    .addComponent(jTListar))
-                .addGap(56, 56, 56))
+                    .addComponent(jBActualizar)
+                    .addComponent(jBAgregar)
+                    .addComponent(jBLimpiar))
+                .addGap(38, 38, 38)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBModificiar)
+                    .addComponent(jBEliminar))
+                .addContainerGap(266, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTBuscarActionPerformed
-        //BUSCAR PROVEEDOR
-        int num = Integer.parseInt(jTId.getText());
-        System.out.println(num);
-
-        ProveedorData pd = new ProveedorData ();
-        Provedor proveedor = pd.buscarProveedor(num);
-        System.out.println(proveedor.getRazonSocial());
-        
-        jTRazonSocial.setText(proveedor.getRazonSocial());
-        jTDomicilio.setText(proveedor.getDomicilio());
-        jTEstado.setSelected(proveedor.isEstado());
-        idProveedor = proveedor.getIdProveedor();
-    }//GEN-LAST:event_jTBuscarActionPerformed
-
-    private void jTGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTGuardarActionPerformed
-        // GUARDAR PROVEEDOR
-        ProveedorData pd = new ProveedorData();
-        Provedor proveedor = new Provedor ();
-        //proveedor.setDni(Integer.parseInt(jTDni.getText()));
-        proveedor.setRazonSocial(jTRazonSocial.getText());
-        proveedor.setDomicilio(jTDomicilio.getText());
-        proveedor.setEstado(jTEstado.isSelected());
-        pd.guardarProveedor(proveedor);
-
-    }//GEN-LAST:event_jTGuardarActionPerformed
-
-    private void jTEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTEliminarActionPerformed
-        // ELIMINAR PROVEEDOR
-        System.out.println("ID DE PROVEEDOR A ELIMINAR: " + idProveedor);
-        ProveedorData pd = new ProveedorData ();
-        pd.eliminarProveedor(idProveedor);
-        idProveedor = 0 ;
+  
+   private void limpiarFormulario() {
+        idProveedor = 0 ; 
         jTRazonSocial.setText("");
         jTDomicilio.setText("");
-        jTEstado.setSelected(false);
-    }//GEN-LAST:event_jTEliminarActionPerformed
+        jTTelefono.setText("");
+        jREstado.setSelected(false);
+        filaSeleccionada = -1;
+    }
+     
+    private void jBModificiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBModificiarActionPerformed
+        // BOTON MODIFICAR
+        filaSeleccionada = jTablaProveedores.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(null, "NO HA SELECCIONADO NINGUNA FILA PARA MODIFICAR");
+        }else{
+            System.out.println("Fila seleccionada: " + filaSeleccionada);
+            idProveedor = (Integer)modelo.getValueAt(filaSeleccionada,0) ;
+            jTRazonSocial.setText((String)modelo.getValueAt(filaSeleccionada,1));
+            jTDomicilio.setText((String)modelo.getValueAt(filaSeleccionada,2));
+            jTTelefono.setText(((Integer)modelo.getValueAt(filaSeleccionada,3)).toString());
+            jREstado.setSelected(true);
+        }
+    }//GEN-LAST:event_jBModificiarActionPerformed
+ 
+    private void jBActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBActualizarActionPerformed
+        // BOTON ACTUALIZAR
+        // ACTUALIZACION EN BASE DE DATOS
+        Provedor proveedor = cargarProveedor();
+        proveedor.setIdProveedor(idProveedor);
+        ProveedorData pro = new ProveedorData ();
+        boolean seActualizo = pro.modificarProveedor(proveedor);
 
-    private void jTListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTListarActionPerformed
-        // TODO add your handling code here:
-        
-        
-        
-        
-        
-        
-    }//GEN-LAST:event_jTListarActionPerformed
+        // ACTUALIZACION EN VISTA
+        if (seActualizo) {
+            modelo.setValueAt(idProveedor,filaSeleccionada,0);
+            modelo.setValueAt(jTRazonSocial.getText().trim(), filaSeleccionada, 1);
+            modelo.setValueAt(jTDomicilio.getText().trim(), filaSeleccionada, 2);
+            modelo.setValueAt(jTTelefono.getText().trim(), filaSeleccionada, 3);
+            modelo.setValueAt(jREstado.isSelected() ? "ACTIVO" : "NO ACTIVO", filaSeleccionada, 4);
+            limpiarFormulario();
+        }
+    }//GEN-LAST:event_jBActualizarActionPerformed
+
+    private void jBLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBLimpiarActionPerformed
+        // BOTON LIMPIAR
+        limpiarFormulario();
+    }//GEN-LAST:event_jBLimpiarActionPerformed
+
+    /*    */
+
+    private void jBAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAgregarActionPerformed
+        // BOTON GUARDAR "LLAMO A GUARDAR PROVEEDOR"
+        try {
+            ProveedorData pd = new ProveedorData();
+            Provedor proveedor = cargarProveedor();
+            boolean seGuardo = pd.guardarProveedor(proveedor);
+            if (seGuardo){
+                cargarDatos(proveedor);
+                limpiarFormulario();
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "SOLO SE ADMITEN NUMEROS");
+        }
+    }//GEN-LAST:event_jBAgregarActionPerformed
+
+    private void jBEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEliminarActionPerformed
+        // BOTON ELIMINAR
+        // jTablaProductos.getSelectedRow() -> SI NO SE HA SELECCIONADO NADA AUN, POR DEFECTO ES -1
+        filaSeleccionada = jTablaProveedores.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(null, "NO HA SELECCIONADO NINGUNA FILA PARA ELIMINAR");
+        }else {
+            idProveedor = (Integer)modelo.getValueAt(filaSeleccionada,0);
+            System.out.println("ID DE PROVEEDOR A ELIMINAR: " + idProveedor );
+            ProveedorData pd = new ProveedorData();
+            boolean seElimino = pd.eliminarProveedor(idProveedor);
+            if (seElimino){
+                modelo.removeRow(filaSeleccionada);
+            }
+        }
+    }//GEN-LAST:event_jBEliminarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBActualizar;
+    private javax.swing.JButton jBAgregar;
+    private javax.swing.JButton jBEliminar;
+    private javax.swing.JButton jBLimpiar;
+    private javax.swing.JButton jBModificiar;
     private javax.swing.JLabel jLDomicilio;
-    private javax.swing.JLabel jLId;
+    private javax.swing.JLabel jLEstado;
     private javax.swing.JLabel jLRazonSocial;
     private javax.swing.JLabel jLTelefono;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLproveedor;
-    private javax.swing.JButton jTBuscar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JRadioButton jREstado;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTDomicilio;
-    private javax.swing.JButton jTEliminar;
-    private javax.swing.JRadioButton jTEstado;
-    private javax.swing.JButton jTGuardar;
-    private javax.swing.JTextField jTId;
-    private javax.swing.JButton jTListar;
     private javax.swing.JTextField jTRazonSocial;
     private javax.swing.JTextField jTTelefono;
+    private javax.swing.JTable jTablaProveedores;
     // End of variables declaration//GEN-END:variables
+
+private void armarCabecera (){
+        modelo.addColumn("ID");
+        modelo.addColumn("RZON SOCIAL");
+        modelo.addColumn("DOMICILIO");
+        modelo.addColumn("TELEFONO");
+        modelo.addColumn("ESTADO");
+        jTablaProveedores.setModel(modelo);     
+    }
+    
+    private void cargarDatos (Provedor proveedor){
+        modelo.addRow(new Object []{
+            proveedor.getIdProveedor(),
+            proveedor.getRazonSocial(),
+            proveedor.getDomicilio(),
+            proveedor.getTelefono(),
+            (proveedor.isEstado() ? "ACTIVO" : "NO ACTIVO" )}); //EL TERNARIO CUMPLE LA FUNCION DE UN IF ELSE 
+        //producto.isEstado() -> CONDICION PARA VALIDAR(SI EL RESULTADO ES TRUE HACE LO QUE ESTA DESPUES DEL SIGNO "?")
+        //? "ACTIVO" : "NO ACTIVO" -> SE MUESTRA "ACTIVO" CUANDO SE CUMPLE LA CONDICCION SINO (ELSE) SE MUESTRA "NO ACTIVO"  
+    }
+    
+    private void cargarTabla (){
+        ProveedorData pd = new ProveedorData();
+        proveedores = pd.listarProveedores();
+        for (Provedor p: proveedores) {
+            cargarDatos(p); 
+        }    
+    }
+    
+    private Provedor cargarProveedor() throws NumberFormatException {
+        Provedor pro = new Provedor();
+        pro.setRazonSocial(jTRazonSocial.getText());
+        pro.setDomicilio(jTDomicilio.getText());
+        pro.setTelefono(Integer.parseInt(jTTelefono.getText()));
+        pro.setEstado(jREstado.isSelected());
+        return pro ; 
+    }
+
 }

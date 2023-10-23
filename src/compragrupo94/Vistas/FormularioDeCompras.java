@@ -5,18 +5,71 @@
  */
 package compragrupo94.Vistas;
 
+import java.time.ZoneId;
+import java.util.Date;
+import compragrupo94.AccesoADatos.CompraData;
+import compragrupo94.Vistas.Compras;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import compragrupo94.AccesoADatos.CompraData;
+import compragrupo94.AccesoADatos.ProductoData;
+import compragrupo94.AccesoADatos.ProveedorData;
+import compragrupo94.Entidades.Producto;
+import compragrupo94.Entidades.Provedor;
+import java.util.List;
 /**
  *
  * @author JATil
  */
 public class FormularioDeCompras extends javax.swing.JInternalFrame {
-
     /**
-     * Creates new form FormularioDeCompras
+     * Creates new form GestionDeAlumnos
      */
+    private CompraData compraData;
+    private Provedor Provedor;
+    private ProveedorData proveedorData;
+    private ProductoData productoData;
+
+    
     public FormularioDeCompras() {
         initComponents();
+        compraData = new CompraData();
+        proveedorData = new ProveedorData(); // Asumiendo que tienes una clase ProveedorData para acceder a los proveedores
+        productoData = new ProductoData();   // Asumiendo que tienes una clase ProductoData para acceder a los productos
+
+        cargarProveedores();
+        cargarProductos();
+        // Limpiar el formulario
+            jComboBoxProveedor.setSelectedIndex(-1);
+            jComboBoxProducto.setSelectedIndex(-1);
+            jTCantidad.setText("");
+            jTFecha.setDate(null);
     }
+
+    private void cargarProveedores() {
+    List<Provedor> proveedores = proveedorData.listarProveedores();
+    for (Provedor proveedor : proveedores) {
+        jComboBoxProveedor.addItem(proveedor.getRazonSocial());
+    }
+}
+
+private void cargarProductos() {
+    List<Producto> productos = productoData.listarProductos();
+    for (Producto producto : productos) {
+        jComboBoxProducto.addItem(producto.getNombreProducto());
+    }
+}
+
+    /*
+    public FormularioDeCompras() {
+        initComponents();
+        compraData = new CompraData(); // Inicialización de CompraData
+        Provedor = new Provedor();
+        
+        
+    }*/
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,21 +80,173 @@ public class FormularioDeCompras extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jTComprar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jTCantidad = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jTFecha = new com.toedter.calendar.JDateChooser();
+        jComboBoxProducto = new javax.swing.JComboBox<>();
+        jComboBoxProveedor = new javax.swing.JComboBox<>();
+
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jLabel1.setText("compras");
+
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel2.setText("PRODUCTO");
+
+        jTComprar.setText("Registrar Comprar");
+        jTComprar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTComprarActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel3.setText("PROVEEDOR");
+
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel4.setText("CANTIDAD");
+
+        jLabel6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel6.setText("FECHA:");
+
+        jComboBoxProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxProductoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel4))))
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jTFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                    .addComponent(jTCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                    .addComponent(jComboBoxProducto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jComboBoxProveedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(87, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(105, 105, 105)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(88, 88, 88)
+                        .addComponent(jTComprar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboBoxProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboBoxProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
+                        .addComponent(jTFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6))
+                .addGap(44, 44, 44)
+                .addComponent(jTComprar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTComprarActionPerformed
+        // Obtener los datos del formulario
+    int proveedorIndex = jComboBoxProveedor.getSelectedIndex();
+    int productoIndex = jComboBoxProducto.getSelectedIndex();
+    String cantidadStr = jTCantidad.getText();
+    Date fecha = jTFecha.getDate();
+
+    if (proveedorIndex == -1 || productoIndex == -1 || cantidadStr.isEmpty() || fecha == null) {
+        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos antes de registrar la compra.", "Error", JOptionPane.ERROR_MESSAGE);
+    } else {
+        try {
+            int cantidad = Integer.parseInt(cantidadStr);
+            Provedor proveedor = proveedorData.listarProveedores().get(proveedorIndex);
+            Producto producto = productoData.listarProductos().get(productoIndex);
+
+            double costoUnitario = cantidad * producto.getPrecioActual();
+            // Actualizar el stock y el precioActual
+            int nuevoStock = producto.getStock() - cantidad;
+            
+            double nuevoPrecioActual = costoUnitario;
+
+            producto.setPrecioActual(nuevoPrecioActual);
+
+            if (nuevoStock >= 0) {
+    // Actualizar el stock en la base de datos
+    if (productoData.actualizarStock(producto.getIdProducto(), nuevoStock)) {
+            // Registra la compra en la base de datos
+            compraData.registrarCompra(proveedor, producto, cantidad, fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            
+
+            // Notificar que la compra se registró exitosamente
+            JOptionPane.showMessageDialog(this, "La compra se registró exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            // Limpia el formulario
+            jComboBoxProveedor.setSelectedIndex(-1);
+            jComboBoxProducto.setSelectedIndex(-1);
+            jTCantidad.setText("");
+            jTFecha.setDate(null);
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al actualizar el stock del producto.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+            JOptionPane.showMessageDialog(this, "La cantidad supera el stock disponible.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "La cantidad debe ser un número entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    }//GEN-LAST:event_jTComprarActionPerformed
+
+    
+    private void jComboBoxProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxProductoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> jComboBoxProducto;
+    private javax.swing.JComboBox<String> jComboBoxProveedor;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JTextField jTCantidad;
+    private javax.swing.JButton jTComprar;
+    private com.toedter.calendar.JDateChooser jTFecha;
     // End of variables declaration//GEN-END:variables
 }

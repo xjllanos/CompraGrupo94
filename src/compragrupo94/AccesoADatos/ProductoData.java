@@ -21,6 +21,25 @@ public class ProductoData {
         con = Conexion.getConexion(); 
     }
     
+    public boolean actualizarStock(int idProducto, int nuevoStock) {
+    boolean resultado = false;
+    String sql = "UPDATE producto SET stock = ? WHERE idProducto = ?";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, nuevoStock);
+        ps.setInt(2, idProducto);
+        int exito = ps.executeUpdate();
+
+        if (exito == 1) {
+            JOptionPane.showMessageDialog(null, "Stock actualizado con éxito.");
+            resultado = true;
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al actualizar el stock del producto.");
+    }
+    return resultado;
+}
     public boolean guardarProducto ( Producto producto){
         boolean resultado = false ; 
         String sql = "INSERT INTO producto (nombreProducto, descripcion, precioActual, stock, estado)"

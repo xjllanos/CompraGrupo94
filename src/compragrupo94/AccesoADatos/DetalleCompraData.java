@@ -1,11 +1,16 @@
-
 package compragrupo94.AccesoADatos;
+
+
 
 import compragrupo94.Entidades.DetalleCompra;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class DetalleCompraData {
 
@@ -16,6 +21,32 @@ public class DetalleCompraData {
         con = Conexion.getConexion();
         detallesCompra = new ArrayList<>(); 
     }
+    
+    
+    public List<DetalleCompra> ProductoEntreFechas(Date fechaInicio, Date fechaFin) throws SQLException {
+        List<DetalleCompra> detalles = new ArrayList<>();
+        String sql = "SELECT d.* FROM DetalleCompra d " +
+                     "JOIN Compra c ON d.idCompra = c.idCompra " +
+                     "WHERE c.fecha BETWEEN ? AND ?";
+        PreparedStatement statement = con.prepareStatement(sql);
+        statement.setDate(1, fechaInicio);
+        statement.setDate(2, fechaFin);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            DetalleCompra detalle = new DetalleCompra(
+                resultSet.getInt("idDetalle"),
+                resultSet.getInt("cantidad"),
+                resultSet.getDouble("precioCosto"),
+                resultSet.getInt("idCompra"),
+                resultSet.getInt("idProducto")
+            );
+            detalles.add(detalle);
+        }
+        return detalles;
+}
+    
+    
+    
 
     public List<DetalleCompra> ProductoPorProveedor(int idProveedor) {
         List<DetalleCompra> detallesPorProveedor = new ArrayList<>();
@@ -56,5 +87,32 @@ public class DetalleCompraData {
         }
         return totalCantidad;
     }
+
+    public List<DetalleCompra> buscarDetallesPorProveedorYFecha(String razonSocialProveedor, LocalDate fechaSeleccionada) {
+        List<DetalleCompra> detallesEncontrados = new ArrayList<>();
+    try {
+        String sql = "SELECT * FROM DetalleCompra d " +
+                     "JOIN Compra c ON d.idCompra = c.idCompra " +
+                     "JOIN Proveedor p ON c.idProveedor = p.idProveedor " + // Agregamos un JOIN con la tabla Proveedor
+                     "WHERE p.razonSocial = ? AND c.fecha = ?"; // Cambiamos c.idProveedor a p.razonSocial
+        PreparedStatement statement = con.prepareStatement(sql);
+        statement.setString(1, razonSocialProveedor);
+        Date fecha = Date.valueOf(fechaSeleccionada); // Convertimos LocalDate a java.sql.Date
+        statement.setDate(2, fecha);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            DetalleCompra detalle = new DetalleCompra(
+                resultSet.getInt("idDetalle"),
+                resultSet.getInt("cantidad"),
+                resultSet.getDouble("precioCosto"),
+                resultSet.getInt("idCompra"),
+                resultSet.getInt("idProducto")
+            );
+            detallesEncontrados.add(detalle);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return detallesEncontrados;
 }
- 
+    }

@@ -1,4 +1,3 @@
-
 package compragrupo94;
 
 import compragrupo94.AccesoADatos.CompraData;
@@ -105,33 +104,57 @@ public class CompraGrupo94 {
 
                           //***DetalleCompraData***//
                           
-         DetalleCompraData detalleCompraData = new DetalleCompraData();
+       DetalleCompraData detalleData = new DetalleCompraData();
+    
+               //obtener detalles entre dos fechas
+        try {
+            LocalDate fechaInicio = LocalDate.of(2023, 10, 1);
+            LocalDate fechaFin = LocalDate.of(2023, 10, 7);
+            List<DetalleCompra> detallesEntreFechas = detalleData.ProductoEntreFechas(Date.valueOf(fechaInicio), Date.valueOf(fechaFin));
+            System.out.println("Detalles entre " + fechaInicio + " y " + fechaFin + ":");
+            for (DetalleCompra detalle : detallesEntreFechas) {
+                System.out.println(detalle);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        // Ejemplo de cómo usar los métodos
-        List<DetalleCompra> detallesPorProveedor = detalleCompraData.ProductoPorProveedor(1); // Supongamos que 1 es el ID del proveedor
-        List<DetalleCompra> detallesPorCompra = detalleCompraData.ProductoPorCompra(1); // Supongamos que 1 es el ID de la compra
-        double precioFinal = detalleCompraData.PrecioFinal(1); // Supongamos que 1 es el ID de la compra
-        int cantidadProducto = detalleCompraData.CantidadesProducto(1); // Supongamos que 1 es el ID del producto
-
-        // Mostrar los resultados
-        System.out.println("Detalles por proveedor:");
+           // Otros detalles del proveedor
+        int idProveedor = 1; 
+        List<DetalleCompra> detallesPorProveedor = detalleData.ProductoPorProveedor(idProveedor);
+        System.out.println("\nDetalles del proveedor con ID " + idProveedor + ":");
         for (DetalleCompra detalle : detallesPorProveedor) {
-            System.out.println(detalle.getIdDetalle() + ", " + detalle.getCantidad() + ", " + detalle.getPrecioCosto() + ", " + detalle.getIdCompra() + ", " + detalle.getIdProducto());
+            System.out.println(detalle);
         }
 
-        System.out.println("Detalles por compra:");
+
+         // detalles de la compra 
+
+        int idCompra = 2; 
+        List<DetalleCompra> detallesPorCompra = detalleData.ProductoPorCompra(idCompra);
+        System.out.println("\nDetalles de la compra con ID " + idCompra + ":");
         for (DetalleCompra detalle : detallesPorCompra) {
-            System.out.println(detalle.getIdDetalle() + ", " + detalle.getCantidad() + ", " + detalle.getPrecioCosto() + ", " + detalle.getIdCompra() + ", " + detalle.getIdProducto());
+            System.out.println(detalle);
         }
 
-        System.out.println("Precio Final: " + precioFinal);
-        System.out.println("Cantidad de producto: " + cantidadProducto);
+               //  cuántos productos con ID se ha comprado
+        int idProducto = 3;  
+        int totalCantidad = detalleData.CantidadesProducto(idProducto);
+        System.out.println("\nTotal de productos con ID " + idProducto + " comprados: " + totalCantidad);
+
+        int idCompra2 = 1; // Supongamos que queremos el precio final de la compra con ID 1
+        double precioFinal = detalleData.PrecioFinal(idCompra2);
+        System.out.println("\nPrecio final de la compra con ID " + idCompra2 + ": " + precioFinal);
+
+        // buscar detalles por proveedor y fecha
+
+        String razonSocialProveedor = "Proveedor1"; 
+        LocalDate fechaSeleccionada = LocalDate.of(2023, 10, 5); 
+        List<DetalleCompra> detallesEncontrados = detalleData.buscarDetallesPorProveedorYFecha(razonSocialProveedor, fechaSeleccionada);
+        System.out.println("\nDetalles encontrados para el proveedor " + razonSocialProveedor + " y la fecha " + fechaSeleccionada + ":");
+        for (DetalleCompra detalle : detallesEncontrados) {
+            System.out.println(detalle);
+        }
     }
+ 
 }  
-    
-
-  
-
-    
-    
-

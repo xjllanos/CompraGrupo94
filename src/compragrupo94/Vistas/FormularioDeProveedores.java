@@ -10,7 +10,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class FormularioDeProveedores extends javax.swing.JInternalFrame {
     private int idProveedor ; 
-    private DefaultTableModel modelo = new DefaultTableModel();
+    private final DefaultTableModel modelo = new DefaultTableModel();
     private List <Provedor> proveedores = new ArrayList(); 
     private int filaSeleccionada; 
 
@@ -172,12 +172,12 @@ public class FormularioDeProveedores extends javax.swing.JInternalFrame {
                     .addComponent(jBAgregar)
                     .addComponent(jBLimpiar))
                 .addGap(38, 38, 38)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBModificiar)
                     .addComponent(jBEliminar))
-                .addContainerGap(266, Short.MAX_VALUE))
+                .addContainerGap(163, Short.MAX_VALUE))
         );
 
         pack();
@@ -224,6 +224,7 @@ public class FormularioDeProveedores extends javax.swing.JInternalFrame {
             modelo.setValueAt(jREstado.isSelected() ? "ACTIVO" : "NO ACTIVO", filaSeleccionada, 4);
             limpiarFormulario();
         }
+        //cargarTabla();
     }//GEN-LAST:event_jBActualizarActionPerformed
 
     private void jBLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBLimpiarActionPerformed
@@ -244,8 +245,9 @@ public class FormularioDeProveedores extends javax.swing.JInternalFrame {
                 limpiarFormulario();
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "SOLO SE ADMITEN NUMEROS");
+            JOptionPane.showMessageDialog(null, "SOLO SE ADMITEN 11 NUMEROS");
         }
+        //cargarTabla();
     }//GEN-LAST:event_jBAgregarActionPerformed
 
     private void jBEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEliminarActionPerformed
@@ -263,6 +265,7 @@ public class FormularioDeProveedores extends javax.swing.JInternalFrame {
                 modelo.removeRow(filaSeleccionada);
             }
         }
+        //cargarTabla();
     }//GEN-LAST:event_jBEliminarActionPerformed
 
 
@@ -285,7 +288,7 @@ public class FormularioDeProveedores extends javax.swing.JInternalFrame {
     private javax.swing.JTable jTablaProveedores;
     // End of variables declaration//GEN-END:variables
 
-private void armarCabecera (){
+    private void armarCabecera (){
         modelo.addColumn("ID");
         modelo.addColumn("RZON SOCIAL");
         modelo.addColumn("DOMICILIO");
@@ -308,9 +311,9 @@ private void armarCabecera (){
     private void cargarTabla (){
         ProveedorData pd = new ProveedorData();
         proveedores = pd.listarProveedores();
-        for (Provedor p: proveedores) {
-            cargarDatos(p); 
-        }    
+        proveedores.forEach((p) -> {
+            cargarDatos(p);
+        });    
     }
     
     private Provedor cargarProveedor() throws NumberFormatException {

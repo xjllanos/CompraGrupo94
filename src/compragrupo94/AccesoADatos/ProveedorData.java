@@ -98,7 +98,7 @@ public class ProveedorData {
                 proveedor.setRazonSocial(rs.getString("razonSocial"));
                 proveedor.setDomicilio(rs.getString("domicilio"));
                 proveedor.setTelefono(rs.getInt("telefono"));
-                proveedor.setEstado(true);
+                proveedor.setEstado(rs.getBoolean("estado"));
                 proveedores.add(proveedor);
             }
             ps.close();
@@ -130,6 +130,29 @@ public class ProveedorData {
             JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Proveedor.");
         }
         return proveedor;
+    }
+    
+    public List<Provedor> listarProveedoresActivos(){
+        String sql = "SELECT idProveedor, razonSocial, domicilio, telefono FROM proveedor WHERE  estado = 1";
+        ArrayList<Provedor> proveedores = new ArrayList<>();
+        try {
+            PreparedStatement ps=con.prepareStatement(sql);
+            
+            ResultSet rs=ps.executeQuery();
+            while(rs.next()){
+                Provedor proveedor = new Provedor();
+                proveedor.setIdProveedor(rs.getInt("idProveedor"));
+                proveedor.setRazonSocial(rs.getString("razonSocial"));
+                proveedor.setDomicilio(rs.getString("domicilio"));
+                proveedor.setTelefono(rs.getInt("telefono"));
+                proveedor.setEstado(true);
+                proveedores.add(proveedor);
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla proveedor.");
+        }
+        return proveedores;
     }
     
 }

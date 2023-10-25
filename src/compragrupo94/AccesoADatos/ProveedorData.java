@@ -38,6 +38,7 @@ public class ProveedorData {
             if (rs.next()){
                 proveedor.setIdProveedor(rs.getInt(1));
                 JOptionPane.showMessageDialog(null, "Proveedor guardado.");
+                resultado = true;
             }
             ps.close();
         } catch (SQLException ex) {
@@ -61,7 +62,8 @@ public class ProveedorData {
             int exito = ps.executeUpdate();
             
             if(exito==1){
-                JOptionPane.showMessageDialog(null, "Proveedor modificado.");    
+                JOptionPane.showMessageDialog(null, "Proveedor modificado."); 
+                resultado = true;
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al acceder a la tabla proveedor." );
@@ -77,7 +79,8 @@ public class ProveedorData {
             ps.setInt(1, id);
             int exito = ps.executeUpdate();
             if(exito==1){
-                JOptionPane.showMessageDialog(null, "Proveedor eliminado.");    
+                JOptionPane.showMessageDialog(null, "Proveedor eliminado.");  
+                resultado = true;
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al acceder a la tabla proveedor.");

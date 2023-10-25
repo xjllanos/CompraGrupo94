@@ -60,6 +60,8 @@ public class FormularioDeProductos extends javax.swing.JInternalFrame {
         jBActualizar = new javax.swing.JButton();
         jBLimpiar = new javax.swing.JButton();
 
+        setClosable(true);
+
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
         jLabel1.setText("PRODUCTOS");
 

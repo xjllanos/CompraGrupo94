@@ -10,7 +10,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class FormularioDeProveedores extends javax.swing.JInternalFrame {
     private int idProveedor ; 
-    private final DefaultTableModel modelo = new DefaultTableModel();
+    private DefaultTableModel modelo = new DefaultTableModel();
     private List <Provedor> proveedores = new ArrayList(); 
     private int filaSeleccionada; 
 
@@ -19,7 +19,7 @@ public class FormularioDeProveedores extends javax.swing.JInternalFrame {
         armarCabecera (); 
         cargarTabla();
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -247,7 +247,7 @@ public class FormularioDeProveedores extends javax.swing.JInternalFrame {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "SOLO SE ADMITEN 11 NUMEROS");
         }
-        //cargarTabla();
+        cargarTabla();
     }//GEN-LAST:event_jBAgregarActionPerformed
 
     private void jBEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEliminarActionPerformed
@@ -262,10 +262,10 @@ public class FormularioDeProveedores extends javax.swing.JInternalFrame {
             ProveedorData pd = new ProveedorData();
             boolean seElimino = pd.eliminarProveedor(idProveedor);
             if (seElimino){
-                modelo.removeRow(filaSeleccionada);
+                //modelo.removeRow(filaSeleccionada);
+                modelo.setValueAt("NO ACTIVO", filaSeleccionada, 4);
             }
         }
-        //cargarTabla();
     }//GEN-LAST:event_jBEliminarActionPerformed
 
 
@@ -311,9 +311,9 @@ public class FormularioDeProveedores extends javax.swing.JInternalFrame {
     private void cargarTabla (){
         ProveedorData pd = new ProveedorData();
         proveedores = pd.listarProveedores();
-        proveedores.forEach((p) -> {
-            cargarDatos(p);
-        });    
+        for (Provedor p:proveedores ){
+            cargarDatos(p); 
+        }    
     }
     
     private Provedor cargarProveedor() throws NumberFormatException {

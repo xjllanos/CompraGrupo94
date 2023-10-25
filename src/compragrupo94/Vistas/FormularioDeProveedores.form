@@ -186,6 +186,9 @@
               </Table>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="FormularioDeProveedores_jTablaProveedores"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

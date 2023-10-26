@@ -1,10 +1,11 @@
 
 package compragrupo94.Vistas;
+import compragrupo94.AccesoADatos.CompraData;
 import compragrupo94.AccesoADatos.DetalleCompraData;
 import compragrupo94.AccesoADatos.ProveedorData;
 import compragrupo94.Entidades.DetalleCompra;
 import compragrupo94.Entidades.Provedor;
-import java.sql.Date;
+//import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -15,26 +16,28 @@ import javax.swing.table.DefaultTableModel;
 
 
 
+
 public class FormularioDetalleCompras extends javax.swing.JInternalFrame {
-private List<DetalleCompra> detallesPorProveedor;
-    private DefaultTableModel modelo;
-     private DetalleCompraData detalleData;
-    private List<Provedor> listaProveedores;
     
-    public FormularioDetalleCompras() {
+    
+     private DetalleCompraData detalleData;
+    private ProveedorData proveedorData;
+    private DefaultTableModel modelo;
+    private CompraData compraData;
+    private List <DetalleCompra> detalles = new ArrayList ();
+
+     public FormularioDetalleCompras() {
         initComponents();
+       compraData = new CompraData();
+        proveedorData = new ProveedorData();
+        detalleData= new DetalleCompraData();
         modelo = new DefaultTableModel();
-         listaProveedores = new ArrayList<>();
-        detalleData = new DetalleCompraData(); 
-        detallesPorProveedor=new ArrayList<>();
-         armarDetalles();
-        actualizarCostoTotal();
-       obtenerCostoTotal();
+        armarDetalles();
         cargarProveedores();
-        
-                
-        
-        
+         jBoxProveedor.setSelectedIndex(-1);
+         jDfecha.setDate(null);
+          obtenerCostoTotal();
+          actualizarCostoTotal();
     }
 
     @SuppressWarnings("unchecked")
@@ -42,7 +45,7 @@ private List<DetalleCompra> detallesPorProveedor;
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jboxProveedor = new javax.swing.JComboBox<>();
+        jBoxProveedor = new javax.swing.JComboBox<>();
         jDfecha = new com.toedter.calendar.JDateChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTdetalles = new javax.swing.JTable();
@@ -52,9 +55,9 @@ private List<DetalleCompra> detallesPorProveedor;
         jBuscar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
-        jboxProveedor.addActionListener(new java.awt.event.ActionListener() {
+        jBoxProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jboxProveedorActionPerformed(evt);
+                jBoxProveedorActionPerformed(evt);
             }
         });
 
@@ -119,7 +122,7 @@ private List<DetalleCompra> detallesPorProveedor;
                     .addComponent(jLabel2))
                 .addGap(43, 43, 43)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jboxProveedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jBoxProveedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jDfecha, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jBuscar)
@@ -130,7 +133,7 @@ private List<DetalleCompra> detallesPorProveedor;
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jboxProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBoxProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -168,53 +171,69 @@ private List<DetalleCompra> detallesPorProveedor;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jboxProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jboxProveedorActionPerformed
-          ProveedorData proveedorData = new ProveedorData();
-        listaProveedores = proveedorData.listarProveedores();
-        
-        jboxProveedor.removeAllItems(); // Limpia combox
-        
-        listaProveedores.forEach((proveedor) -> {
-            jboxProveedor.addItem(proveedor.getRazonSocial());
-        });
-    }//GEN-LAST:event_jboxProveedorActionPerformed
+    private void jBoxProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBoxProveedorActionPerformed
+      
+    }//GEN-LAST:event_jBoxProveedorActionPerformed
 
     private void jBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBuscarActionPerformed
-        // Verifica  q la fecha y el proveedor sean  seleccionados
-    if (jDfecha.getDate() != null && jboxProveedor.getSelectedItem() != null) {
-        Date dateSeleccionada = (Date) jDfecha.getDate();
-        Instant instant = dateSeleccionada.toInstant();
-        ZoneId zoneId = ZoneId.systemDefault();
-        LocalDate fechaSeleccionada = instant.atZone(zoneId).toLocalDate();
-        String razonSocialProveedor = jboxProveedor.getSelectedItem().toString();
+         int proveedorIndex = jBoxProveedor.getSelectedIndex();
+          Date fecha = (Date) jDfecha.getDate();
 
-        
-        List<DetalleCompra> comprasEncontradas = detalleData.buscarDetallesPorProveedorYFecha(razonSocialProveedor, fechaSeleccionada);
-
-        detallesPorProveedor = comprasEncontradas;
-
-        // Actualiza la tabla
-        actualizarTablaDetalles();
-    } else {
-        JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha y un proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
+    if (proveedorIndex == -1 || fecha == null) {
+        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos antes de buscar compras.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
     }
-   
-      
-                                          
+
+    try {
+        Provedor proveedor = proveedorData.listarProveedores().get(proveedorIndex);
+
+        // Llama al método para buscar compras por proveedor y fecha
+         List<DetalleCompra> detalles = detalleData.buscarDetallesPorProveedorYFecha(proveedor.getRazonSocial(), fecha);
+
+
+        // Mostrar los detalles en la tabla
+        mostrarDetallesEnTabla(detalles);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Ocurrió un error al buscar las compras.", "Error", JOptionPane.ERROR_MESSAGE);
+    } 
     }//GEN-LAST:event_jBuscarActionPerformed
 
+     private void mostrarDetallesEnTabla(List<DetalleCompra> detalles) {
+       DefaultTableModel modelo = (DefaultTableModel) jTdetalles.getModel();
+
+    // Limpia la tabla
+    modelo.setRowCount(0);
+
+    for (DetalleCompra detalle : detalles) {
+        Object[] fila = {
+            detalle.getIdCompra(),
+            detalle.getIdProveedor(),
+            detalle.getPrecioCosto(),
+            detalle.getIdProducto(),
+            detalle.getCantidad()
+          
+        };
+
+        modelo.addRow(fila);
+    }
+    
+   } 
+    
+    
+    
+    
+    
+    
+    
+    
     private void jDfechaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDfechaPropertyChange
-        // Verifica si tanto la fecha como el proveedor están seleccionados
-    if (jDfecha.getDate() != null && jboxProveedor.getSelectedItem() != null) {
-        jBuscar.setEnabled(true);
-    }
-    else {
-        jBuscar.setEnabled(false);
-    }
+    
     }//GEN-LAST:event_jDfechaPropertyChange
 
     private void jTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTotalActionPerformed
-          try {
+           try {
         // Llama al método para actualizar 
         actualizarCostoTotal();
 
@@ -226,19 +245,16 @@ private List<DetalleCompra> detallesPorProveedor;
     } catch (Exception e) {
         e.printStackTrace(); 
     }
+    
     }//GEN-LAST:event_jTotalActionPerformed
 
     private void jTdetallesPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTdetallesPropertyChange
-        if ("tableCellEditor".equals(evt.getPropertyName())) {
-            int fila = jTdetalles.getSelectedRow();
-            int columna = jTdetalles.getSelectedColumn();
-            Object valor = jTdetalles.getValueAt(fila, columna);
-            System.out.println("Valor seleccionado: " + valor);
-        }
+     
     }//GEN-LAST:event_jTdetallesPropertyChange
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> jBoxProveedor;
     private javax.swing.JButton jBuscar;
     private com.toedter.calendar.JDateChooser jDfecha;
     private javax.swing.JLabel jLabel1;
@@ -248,15 +264,12 @@ private List<DetalleCompra> detallesPorProveedor;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTdetalles;
     private javax.swing.JTextField jTotal;
-    private javax.swing.JComboBox<String> jboxProveedor;
     // End of variables declaration//GEN-END:variables
 
     private void armarDetalles() {
-        
-        ArrayList <Object> filaCabecera=new ArrayList<>();
+            ArrayList <Object> filaCabecera=new ArrayList<>();
                 filaCabecera.add("IdProducto"); 
                 filaCabecera.add("Nombre");
-                filaCabecera.add("Descripcion");
                 filaCabecera.add("Cantidad");
                 filaCabecera.add("Precio");
                 filaCabecera.add("Total");
@@ -264,13 +277,31 @@ private List<DetalleCompra> detallesPorProveedor;
            modelo.addColumn(it);
             
             }
-            modelo.addColumn("Costo Total"); 
-           jTdetalles.setModel(modelo);
+           jTdetalles.setModel(modelo); 
+       
+    }
+
+    private void cargarProveedores() {
+           List<Provedor> proveedores = proveedorData.listarProveedores();
+    for (Provedor proveedor : proveedores) {
+        jBoxProveedor.addItem(proveedor.getRazonSocial());
+    }
+    }
+
+    private double obtenerCostoTotal() {
+        double costoTotal = 0.0;
+    
+    for (int i = 0; i < jTdetalles.getRowCount(); i++) {
+        double precio = (double) jTdetalles.getValueAt(i, 4);
+        int cantidad = (int) jTdetalles.getValueAt(i, 5);
+        costoTotal += precio * cantidad;
     }
     
+    return costoTotal;
+    }
 
     private void actualizarCostoTotal() {
-        DefaultTableModel modelo = (DefaultTableModel) jTdetalles.getModel(); 
+          DefaultTableModel modelo = (DefaultTableModel) jTdetalles.getModel(); 
     double costoTotal = 0.0;
    
     // Itera sobre las filas de la tabla
@@ -285,70 +316,8 @@ private List<DetalleCompra> detallesPorProveedor;
     
     // Actualiza campo para mostrar el costo total
     jTotal.setText(String.valueOf(costoTotal)); 
-    
-    
     }
 
-    private double obtenerCostoTotal() {
-         double costoTotal = 0.0;
-    
-    for (int i = 0; i < jTdetalles.getRowCount(); i++) {
-        double precio = (double) jTdetalles.getValueAt(i, 4);
-        int cantidad = (int) jTdetalles.getValueAt(i, 5);
-        costoTotal += precio * cantidad;
-    }
-    
-    return costoTotal;
-    }
-
-    private void cargarProveedores() {
-          ProveedorData proveedorData = new ProveedorData();
-        listaProveedores = proveedorData.listarProveedores();
-
-        jboxProveedor.removeAllItems(); // Limpia los elementos del JComboBox
-
-        listaProveedores.forEach((proveedor) -> {
-            jboxProveedor.addItem(proveedor.getRazonSocial());
-        });
-    
-    }
-    private void actualizarTablaDetalles() {
-         // Actualiza la tabla jTdetalles
-    DefaultTableModel model = (DefaultTableModel) jTdetalles.getModel();
-    model.setRowCount(0); // Limpia la tabla 
-
-    for (DetalleCompra detalle : detallesPorProveedor) {
-        Object[] row = {detalle.getIdCompra(), detalle.getIdProducto(), detalle.getCantidad(), detalle.getPrecioCosto()};
-        model.addRow(row);
-    }
-    
-  }  
-    
-    private void limpiarTabla(){
-        int indice = modelo.getRowCount()-1;
-         for (int i = indice;i>0;i--)
-             modelo.removeRow(i);
    
-}
     
-     private void mostrarComprasEnTabla(List<DetalleCompra> compras) {
-    DefaultTableModel modelo = (DefaultTableModel) jTdetalles.getModel();
-
-    // Limpia la tabla
-    modelo.setRowCount(0);
-
-    for (DetalleCompra compra : compras) {
-        Object[] fila = {
-            compra.getIdCompra(),
-            compra.getIdProveedor(),
-            compra.getPrecioCosto(),
-            compra.getIdProducto(), 
-          
-        };
-
-        modelo.addRow(fila);
-    }
-    
-   
-    }
 }

@@ -1,16 +1,17 @@
 
 package compragrupo94.Entidades;
 
+import java.time.LocalDate;
 
 public class DetalleCompra {
-    private int idDetalle ;
-    private int cantidad ; 
-    private double precioCosto ; 
-    private int idCompra ;
-    private int idProducto ; 
+    private int idDetalle;
+    private int cantidad;
+    private double precioCosto;
+    private int idCompra;
+    private int idProducto;
+    private int idProveedor; 
+    private LocalDate fecha; 
 
-    public DetalleCompra() {
-    }
 
     public DetalleCompra(int idDetalle, int cantidad, double precioCosto, int idCompra, int idProducto) {
         this.idDetalle = idDetalle;
@@ -18,6 +19,8 @@ public class DetalleCompra {
         this.precioCosto = precioCosto;
         this.idCompra = idCompra;
         this.idProducto = idProducto;
+        this.idProveedor= idProveedor;
+        this.fecha = fecha;
     }
 
     public DetalleCompra(int cantidad, double precioCosto, int idCompra, int idProducto) {
@@ -25,10 +28,8 @@ public class DetalleCompra {
         this.precioCosto = precioCosto;
         this.idCompra = idCompra;
         this.idProducto = idProducto;
-    }
-
-    public DetalleCompra(int aInt, int aInt0, int aInt1, int aInt2, int aInt3, int aInt4) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.idProveedor = idProveedor;
+        this.fecha = fecha;
     }
 
     public int getIdDetalle() {
@@ -72,8 +73,23 @@ public class DetalleCompra {
     }
 
     public int getIdProveedor() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return idProveedor;
     }
-    
-    
+
+    public void setIdProveedor(int idProveedor) {
+        this.idProveedor = idProveedor;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
 }
+ 
+
+
+
+

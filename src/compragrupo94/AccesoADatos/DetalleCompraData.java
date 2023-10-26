@@ -44,7 +44,22 @@ public class DetalleCompraData {
         }
         return detalles;
 }
-    
+     public void agregarDetalleCompra(DetalleCompra detalle) throws SQLException {
+        String query = "INSERT INTO detalle_compra (cantidad, precio_costo, id_compra, id_producto, id_proveedor, fecha) " +
+                       "VALUES (?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement statement = con.prepareStatement(query);
+        statement.setInt(1, detalle.getCantidad());
+        statement.setDouble(2, detalle.getPrecioCosto());
+        statement.setInt(3, detalle.getIdCompra());
+        statement.setInt(4, detalle.getIdProducto());
+        statement.setInt(5, detalle.getIdProveedor());
+        statement.setDate(6, java.sql.Date.valueOf(detalle.getFecha()));
+
+        statement.executeUpdate();
+    }
+
+  
     
     
 
@@ -88,16 +103,16 @@ public class DetalleCompraData {
         return totalCantidad;
     }
 
-    public List<DetalleCompra> buscarDetallesPorProveedorYFecha(String razonSocialProveedor, LocalDate fechaSeleccionada) {
-        List<DetalleCompra> detallesEncontrados = new ArrayList<>();
+   public List<DetalleCompra> buscarDetallesPorProveedorYFecha(String razonSocialProveedor, LocalDate fechaSeleccionada) {
+    List<DetalleCompra> detallesEncontrados = new ArrayList<>();
     try {
         String sql = "SELECT * FROM DetalleCompra d " +
                      "JOIN Compra c ON d.idCompra = c.idCompra " +
-                     "JOIN Proveedor p ON c.idProveedor = p.idProveedor " + // Agregamos un JOIN con la tabla Proveedor
-                     "WHERE p.razonSocial = ? AND c.fecha = ?"; // Cambiamos c.idProveedor a p.razonSocial
+                     "JOIN Proveedor p ON c.idProveedor = p.idProveedor " + 
+                     "WHERE p.razonSocial = ? AND DATE(c.fecha) = ?"; 
         PreparedStatement statement = con.prepareStatement(sql);
         statement.setString(1, razonSocialProveedor);
-        Date fecha = Date.valueOf(fechaSeleccionada); // Convertimos LocalDate a java.sql.Date
+        Date fecha = java.sql.Date.valueOf(fechaSeleccionada); 
         statement.setDate(2, fecha);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
@@ -112,7 +127,13 @@ public class DetalleCompraData {
         }
     } catch (SQLException e) {
         e.printStackTrace();
+        // Aquí puedes agregar un mensaje de error específico si lo deseas
     }
     return detallesEncontrados;
 }
+
+    public List<DetalleCompra> buscarDetallesPorProveedorYFecha(String razonSocial, Date fecha) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+  }  
+  

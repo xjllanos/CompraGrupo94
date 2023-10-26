@@ -1,45 +1,46 @@
-
 package compragrupo94.Vistas;
+
 import compragrupo94.AccesoADatos.CompraData;
 import compragrupo94.AccesoADatos.DetalleCompraData;
 import compragrupo94.AccesoADatos.ProveedorData;
 import compragrupo94.Entidades.DetalleCompra;
 import compragrupo94.Entidades.Provedor;
-//import java.sql.Date;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.ZoneId;
+//import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
-
-
 public class FormularioDetalleCompras extends javax.swing.JInternalFrame {
-    
-    
-     private DetalleCompraData detalleData;
+    //GENERO LAS CONSTANTES PARA LAS POSICIONES DE LAS COLUMNAS 
+    private final int COL_ID_COMPRA =0;
+    private final int COL_NOMBRE = 1;
+    private final int COL_TOTAL = 2; 
+    private final int COL_ID_PRODUCTO = 3;
+    private final int COL_CANTIDAD = 4; 
+    // 
+    private DetalleCompraData detalleData;
     private ProveedorData proveedorData;
     private DefaultTableModel modelo;
     private CompraData compraData;
-    private List <DetalleCompra> detalles = new ArrayList ();
-
-     public FormularioDetalleCompras() {
+    private List<DetalleCompra> detalles = new ArrayList();
+    
+    public FormularioDetalleCompras() {
         initComponents();
-       compraData = new CompraData();
+        compraData = new CompraData();
         proveedorData = new ProveedorData();
-        detalleData= new DetalleCompraData();
+        detalleData = new DetalleCompraData();
         modelo = new DefaultTableModel();
         armarDetalles();
         cargarProveedores();
-         jBoxProveedor.setSelectedIndex(-1);
-         jDfecha.setDate(null);
-          obtenerCostoTotal();
-          actualizarCostoTotal();
+        jBoxProveedor.setSelectedIndex(-1);
+        jDfecha.setDate(null);
+        obtenerCostoTotal();
+        actualizarCostoTotal();
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -172,84 +173,76 @@ public class FormularioDetalleCompras extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBoxProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBoxProveedorActionPerformed
-      
+        
     }//GEN-LAST:event_jBoxProveedorActionPerformed
 
     private void jBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBuscarActionPerformed
-         int proveedorIndex = jBoxProveedor.getSelectedIndex();
-          Date fecha = (Date) jDfecha.getDate();
+        int proveedorIndex = jBoxProveedor.getSelectedIndex();
+        Date fecha = (Date) jDfecha.getDate();
+        
+        if (proveedorIndex == -1 || fecha == null) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos antes de buscar compras.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        try {
+            Provedor proveedor = proveedorData.listarProveedores().get(proveedorIndex);
 
-    if (proveedorIndex == -1 || fecha == null) {
-        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos antes de buscar compras.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+            // Llama al método para buscar compras por proveedor y fecha
+            List<DetalleCompra> detalles = detalleData.buscarDetallesPorProveedorYFecha(proveedor.getRazonSocial(),
+                    fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            //
 
-    try {
-        Provedor proveedor = proveedorData.listarProveedores().get(proveedorIndex);
-
-        // Llama al método para buscar compras por proveedor y fecha
-         List<DetalleCompra> detalles = detalleData.buscarDetallesPorProveedorYFecha(proveedor.getRazonSocial(), fecha);
-
-
-        // Mostrar los detalles en la tabla
-        mostrarDetallesEnTabla(detalles);
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Ocurrió un error al buscar las compras.", "Error", JOptionPane.ERROR_MESSAGE);
-    } 
+            // Mostrar los detalles en la tabla
+            mostrarDetallesEnTabla(detalles);
+            jTotal.setText(String.valueOf(obtenerCostoTotal())); // COSTO TOTAL 
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Ocurrió un error al buscar las compras.", "Error", JOptionPane.ERROR_MESSAGE);
+        }        
     }//GEN-LAST:event_jBuscarActionPerformed
+    
+    private void mostrarDetallesEnTabla(List<DetalleCompra> detalles) {
+        DefaultTableModel modelo = (DefaultTableModel) jTdetalles.getModel();
 
-     private void mostrarDetallesEnTabla(List<DetalleCompra> detalles) {
-       DefaultTableModel modelo = (DefaultTableModel) jTdetalles.getModel();
+        // Limpia la tabla
+        modelo.setRowCount(0);
+        
+        for (DetalleCompra detalle : detalles) {
+            Object[] fila = {
+                detalle.getIdCompra(),
+                detalle.getIdProveedor(),
+                detalle.getPrecioCosto(),
+                detalle.getIdProducto(),
+                detalle.getCantidad()
+            };
+            modelo.addRow(fila);
+        }
+    }    
+    
 
-    // Limpia la tabla
-    modelo.setRowCount(0);
-
-    for (DetalleCompra detalle : detalles) {
-        Object[] fila = {
-            detalle.getIdCompra(),
-            detalle.getIdProveedor(),
-            detalle.getPrecioCosto(),
-            detalle.getIdProducto(),
-            detalle.getCantidad()
-          
-        };
-
-        modelo.addRow(fila);
-    }
-    
-   } 
-    
-    
-    
-    
-    
-    
-    
-    
     private void jDfechaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDfechaPropertyChange
-    
+        
     }//GEN-LAST:event_jDfechaPropertyChange
 
     private void jTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTotalActionPerformed
-           try {
-        // Llama al método para actualizar 
-        actualizarCostoTotal();
+        try {
+            // Llama al método para actualizar 
+            actualizarCostoTotal();
 
-       // llama al método para obtener 
-        double costoTotal = obtenerCostoTotal();
+            // llama al método para obtener 
+            double costoTotal = obtenerCostoTotal();
 
-        // Actualiza el jTotal
-        jTotal.setText(String.valueOf(costoTotal));
-    } catch (Exception e) {
-        e.printStackTrace(); 
-    }
-    
+            // Actualiza el jTotal
+            jTotal.setText(String.valueOf(costoTotal));
+        } catch (Exception e) {
+            e.printStackTrace();            
+        }
+        
     }//GEN-LAST:event_jTotalActionPerformed
 
     private void jTdetallesPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTdetallesPropertyChange
-     
+        
     }//GEN-LAST:event_jTdetallesPropertyChange
 
 
@@ -267,57 +260,54 @@ public class FormularioDetalleCompras extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     private void armarDetalles() {
-            ArrayList <Object> filaCabecera=new ArrayList<>();
-                filaCabecera.add("IdProducto"); 
-                filaCabecera.add("Nombre");
-                filaCabecera.add("Cantidad");
-                filaCabecera.add("Precio");
-                filaCabecera.add("Total");
-           for (Object it: filaCabecera){
-           modelo.addColumn(it);
-            
-            }
-           jTdetalles.setModel(modelo); 
-       
+        ArrayList<Object> filaCabecera = new ArrayList<>();
+        filaCabecera.add("IdCompra");        
+        filaCabecera.add("Nombre");
+        filaCabecera.add("Total");
+        filaCabecera.add("IdProducto");
+        filaCabecera.add("Cantidad");
+        for (Object it : filaCabecera) {
+            modelo.addColumn(it);
+        }
+        jTdetalles.setModel(modelo);        
     }
-
+    
     private void cargarProveedores() {
-           List<Provedor> proveedores = proveedorData.listarProveedores();
-    for (Provedor proveedor : proveedores) {
-        jBoxProveedor.addItem(proveedor.getRazonSocial());
+        List<Provedor> proveedores = proveedorData.listarProveedores();
+        for (Provedor proveedor : proveedores) {
+            jBoxProveedor.addItem(proveedor.getRazonSocial());
+        }
     }
-    }
-
+    
     private double obtenerCostoTotal() {
         double costoTotal = 0.0;
-    
-    for (int i = 0; i < jTdetalles.getRowCount(); i++) {
-        double precio = (double) jTdetalles.getValueAt(i, 4);
-        int cantidad = (int) jTdetalles.getValueAt(i, 5);
-        costoTotal += precio * cantidad;
+        
+        for (int i = 0; i < jTdetalles.getRowCount(); i++) {
+            System.out.println("precio: " + jTdetalles.getValueAt(i, COL_TOTAL).toString());
+            double precio = (double) jTdetalles.getValueAt(i, COL_TOTAL);
+            //PRECIO SERIA COL_TOTAL(EN LA UBICACION 2 DE LA TABLA) 
+            costoTotal += precio;
+            System.out.println("costo total " + costoTotal);
+        }
+        return costoTotal;
     }
     
-    return costoTotal;
-    }
-
+    
     private void actualizarCostoTotal() {
-          DefaultTableModel modelo = (DefaultTableModel) jTdetalles.getModel(); 
-    double costoTotal = 0.0;
-   
-    // Itera sobre las filas de la tabla
-    for (int i = 0; i < jTdetalles.getRowCount(); i++) {
-        // Obtiene el precio y cantidad de la fila
-        double precio = (double) jTdetalles.getValueAt(i,4); 
-        int cantidad = (int) jTdetalles.getValueAt(i, 5); 
-        double Total =(double)jTdetalles.getValueAt(4, 5);
-        // Calcula el costo total por producto y lo suma al costo total 
-        costoTotal += precio * cantidad;
-    }
-    
-    // Actualiza campo para mostrar el costo total
-    jTotal.setText(String.valueOf(costoTotal)); 
-    }
+        DefaultTableModel modelo = (DefaultTableModel) jTdetalles.getModel();        
+        double costoTotal = 0.0;
+        // Itera sobre las filas de la tabla
+        for (int i = 0; i < jTdetalles.getRowCount(); i++) {
+            // Obtiene el precio y cantidad de la fila
+            double precio = (double) jTdetalles.getValueAt(i, COL_TOTAL);            
+            int cantidad = (int) jTdetalles.getValueAt(i, COL_CANTIDAD);            
+            double Total = (double) jTdetalles.getValueAt(COL_TOTAL, COL_CANTIDAD);
+            // Calcula el costo total por producto y lo suma al costo total 
+            costoTotal += precio * cantidad;
+        }
 
-   
+        // Actualiza campo para mostrar el costo total
+        jTotal.setText(String.valueOf(costoTotal));        
+    }
     
 }

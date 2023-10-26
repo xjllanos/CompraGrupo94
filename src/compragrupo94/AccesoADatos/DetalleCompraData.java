@@ -108,14 +108,16 @@ public class DetalleCompraData {
     try {
         String sql = "SELECT * FROM DetalleCompra d " +
                      "JOIN Compra c ON d.idCompra = c.idCompra " +
-                     "JOIN Proveedor p ON c.idProveedor = p.idProveedor " + 
+                     "JOIN Proveedor p ON c.idProvedor = p.idProveedor " + 
                      "WHERE p.razonSocial = ? AND DATE(c.fecha) = ?"; 
+        
         PreparedStatement statement = con.prepareStatement(sql);
         statement.setString(1, razonSocialProveedor);
-        Date fecha = java.sql.Date.valueOf(fechaSeleccionada); 
+        Date fecha = Date.valueOf(fechaSeleccionada); 
         statement.setDate(2, fecha);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
+            
             DetalleCompra detalle = new DetalleCompra(
                 resultSet.getInt("idDetalle"),
                 resultSet.getInt("cantidad"),
@@ -123,6 +125,12 @@ public class DetalleCompraData {
                 resultSet.getInt("idCompra"),
                 resultSet.getInt("idProducto")
             );
+            System.out.println(">>> Detalle de compra: { idDetalle: " + detalle.getIdDetalle()
+                    + ", cantidad: " + detalle.getCantidad()
+                    + ", precioCosto: " + detalle.getPrecioCosto()
+                    + ", compra: " + detalle.getIdCompra() 
+                    + ", producto: " + detalle.getIdProducto() 
+                    + " }"); // AGREGUE UN SOUT PARA QUE IMPRIMA EL MENSAJE Y MUESTRE EL DETALLE DE COMPRA 
             detallesEncontrados.add(detalle);
         }
     } catch (SQLException e) {
@@ -132,8 +140,6 @@ public class DetalleCompraData {
     return detallesEncontrados;
 }
 
-    public List<DetalleCompra> buscarDetallesPorProveedorYFecha(String razonSocial, Date fecha) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+  
   }  
   

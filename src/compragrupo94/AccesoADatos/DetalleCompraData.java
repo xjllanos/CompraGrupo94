@@ -1,7 +1,6 @@
 package compragrupo94.AccesoADatos;
 
-
-
+import compragrupo94.DataTransferObject.DetalleComprasDTO;
 import compragrupo94.Entidades.DetalleCompra;
 import java.sql.Connection;
 import java.sql.Date;
@@ -19,34 +18,34 @@ public class DetalleCompraData {
 
     public DetalleCompraData() {
         con = Conexion.getConexion();
-        detallesCompra = new ArrayList<>(); 
+        detallesCompra = new ArrayList<>();
     }
-    
-    
+
     public List<DetalleCompra> ProductoEntreFechas(Date fechaInicio, Date fechaFin) throws SQLException {
         List<DetalleCompra> detalles = new ArrayList<>();
-        String sql = "SELECT d.* FROM DetalleCompra d " +
-                     "JOIN Compra c ON d.idCompra = c.idCompra " +
-                     "WHERE c.fecha BETWEEN ? AND ?";
+        String sql = "SELECT d.* FROM DetalleCompra d "
+                + "JOIN Compra c ON d.idCompra = c.idCompra "
+                + "WHERE c.fecha BETWEEN ? AND ?";
         PreparedStatement statement = con.prepareStatement(sql);
         statement.setDate(1, fechaInicio);
         statement.setDate(2, fechaFin);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             DetalleCompra detalle = new DetalleCompra(
-                resultSet.getInt("idDetalle"),
-                resultSet.getInt("cantidad"),
-                resultSet.getDouble("precioCosto"),
-                resultSet.getInt("idCompra"),
-                resultSet.getInt("idProducto")
+                    resultSet.getInt("idDetalle"),
+                    resultSet.getInt("cantidad"),
+                    resultSet.getDouble("precioCosto"),
+                    resultSet.getInt("idCompra"),
+                    resultSet.getInt("idProducto")
             );
             detalles.add(detalle);
         }
         return detalles;
-}
-     public void agregarDetalleCompra(DetalleCompra detalle) throws SQLException {
-        String query = "INSERT INTO detalle_compra (cantidad, precio_costo, id_compra, id_producto, id_proveedor, fecha) " +
-                       "VALUES (?, ?, ?, ?, ?, ?)";
+    }
+
+    public void agregarDetalleCompra(DetalleCompra detalle) throws SQLException {
+        String query = "INSERT INTO detalle_compra (cantidad, precio_costo, id_compra, id_producto, id_proveedor, fecha) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
 
         PreparedStatement statement = con.prepareStatement(query);
         statement.setInt(1, detalle.getCantidad());
@@ -58,10 +57,6 @@ public class DetalleCompraData {
 
         statement.executeUpdate();
     }
-
-  
-    
-    
 
     public List<DetalleCompra> ProductoPorProveedor(int idProveedor) {
         List<DetalleCompra> detallesPorProveedor = new ArrayList<>();
@@ -103,43 +98,43 @@ public class DetalleCompraData {
         return totalCantidad;
     }
 
-   public List<DetalleCompra> buscarDetallesPorProveedorYFecha(String razonSocialProveedor, LocalDate fechaSeleccionada) {
-    List<DetalleCompra> detallesEncontrados = new ArrayList<>();
-    try {
-        String sql = "SELECT * FROM DetalleCompra d " +
-                     "JOIN Compra c ON d.idCompra = c.idCompra " +
-                     "JOIN Proveedor p ON c.idProvedor = p.idProveedor " + 
-                     "WHERE p.razonSocial = ? AND DATE(c.fecha) = ?"; 
-        
-        PreparedStatement statement = con.prepareStatement(sql);
-        statement.setString(1, razonSocialProveedor);
-        Date fecha = Date.valueOf(fechaSeleccionada); 
-        statement.setDate(2, fecha);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            
-            DetalleCompra detalle = new DetalleCompra(
-                resultSet.getInt("idDetalle"),
-                resultSet.getInt("cantidad"),
-                resultSet.getDouble("precioCosto"),
-                resultSet.getInt("idCompra"),
-                resultSet.getInt("idProducto")
-            );
-            System.out.println(">>> Detalle de compra: { idDetalle: " + detalle.getIdDetalle()
-                    + ", cantidad: " + detalle.getCantidad()
-                    + ", precioCosto: " + detalle.getPrecioCosto()
-                    + ", compra: " + detalle.getIdCompra() 
-                    + ", producto: " + detalle.getIdProducto() 
-                    + " }"); // AGREGUE UN SOUT PARA QUE IMPRIMA EL MENSAJE Y MUESTRE EL DETALLE DE COMPRA 
-            detallesEncontrados.add(detalle);
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        // Aquí puedes agregar un mensaje de error específico si lo deseas
-    }
-    return detallesEncontrados;
-}
+    public List<DetalleComprasDTO> buscarDetallesPorProveedorYFecha(String razonSocialProveedor, LocalDate fechaSeleccionada) {
+        List<DetalleComprasDTO> detallesEncontrados = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM DetalleCompra d "
+                    + "JOIN Compra c ON d.idCompra = c.idCompra "
+                    + "JOIN Proveedor p ON c.idProvedor = p.idProveedor "
+                    + "JOIN Producto pr ON pr.idProducto = d.idProducto "
+                    + "WHERE p.razonSocial = ? AND DATE(c.fecha) = ?";
 
-  
-  }  
-  
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setString(1, razonSocialProveedor);
+            Date fecha = Date.valueOf(fechaSeleccionada);
+            statement.setDate(2, fecha);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+
+                DetalleComprasDTO detalle = new  DetalleComprasDTO(
+                        resultSet.getInt("idDetalle"),
+                        resultSet.getInt("cantidad"),
+                        resultSet.getDouble("precioCosto"),
+                        resultSet.getInt("idCompra"),
+                        resultSet.getInt("idProducto")
+                );
+                detalle.setNombre(resultSet.getNString("nombreProducto"));
+                System.out.println(">>> Detalle de compra: { idDetalle: " + detalle.getIdDetalle()
+                        + ", cantidad: " + detalle.getCantidad()
+                        + ", precioCosto: " + detalle.getPrecioCosto()
+                        + ", compra: " + detalle.getIdCompra()
+                        + ", producto: " + detalle.getIdProducto()
+                        + " }"); // AGREGUE UN SOUT PARA QUE IMPRIMA EL MENSAJE Y MUESTRE EL DETALLE DE COMPRA 
+                detallesEncontrados.add(detalle);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Aquí puedes agregar un mensaje de error específico si lo deseas
+        }
+        return detallesEncontrados;
+    }
+
+}

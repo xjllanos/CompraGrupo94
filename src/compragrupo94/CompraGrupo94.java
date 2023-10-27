@@ -5,6 +5,7 @@ import compragrupo94.AccesoADatos.Conexion;
 import compragrupo94.AccesoADatos.DetalleCompraData;
 import compragrupo94.AccesoADatos.ProductoData;
 import compragrupo94.AccesoADatos.ProveedorData;
+import compragrupo94.DataTransferObject.DetalleComprasDTO;
 import compragrupo94.Entidades.Compras;
 import compragrupo94.Entidades.DetalleCompra;
 import compragrupo94.Entidades.Producto;
@@ -150,7 +151,7 @@ public class CompraGrupo94 {
 
         String razonSocialProveedor = "Proveedor1"; 
         LocalDate fechaSeleccionada = LocalDate.of(2023, 10, 5); 
-        List<DetalleCompra> detallesEncontrados = detalleData.buscarDetallesPorProveedorYFecha(razonSocialProveedor, fechaSeleccionada);
+        List<DetalleComprasDTO> detallesEncontrados = detalleData.buscarDetallesPorProveedorYFecha(razonSocialProveedor, fechaSeleccionada);
         System.out.println("\nDetalles encontrados para el proveedor " + razonSocialProveedor + " y la fecha " + fechaSeleccionada + ":");
         for (DetalleCompra detalle : detallesEncontrados) {
             System.out.println(detalle);

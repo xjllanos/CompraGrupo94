@@ -247,7 +247,7 @@ public class FormularioDeProveedores extends javax.swing.JInternalFrame {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "SOLO SE ADMITEN 11 NUMEROS");
         }
-        cargarTabla();
+        //cargarTabla();
     }//GEN-LAST:event_jBAgregarActionPerformed
 
     private void jBEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEliminarActionPerformed

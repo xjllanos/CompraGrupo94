@@ -3,6 +3,7 @@ package compragrupo94.Vistas;
 import compragrupo94.AccesoADatos.CompraData;
 import compragrupo94.AccesoADatos.DetalleCompraData;
 import compragrupo94.AccesoADatos.ProveedorData;
+import compragrupo94.DataTransferObject.DetalleComprasDTO;
 import compragrupo94.Entidades.DetalleCompra;
 import compragrupo94.Entidades.Provedor;
 import java.time.ZoneId;
@@ -189,7 +190,7 @@ public class FormularioDetalleCompras extends javax.swing.JInternalFrame {
             Provedor proveedor = proveedorData.listarProveedores().get(proveedorIndex);
 
             // Llama al método para buscar compras por proveedor y fecha
-            List<DetalleCompra> detalles = detalleData.buscarDetallesPorProveedorYFecha(proveedor.getRazonSocial(),
+            List<DetalleComprasDTO> detalles = detalleData.buscarDetallesPorProveedorYFecha(proveedor.getRazonSocial(),
                     fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             //
 
@@ -202,16 +203,16 @@ public class FormularioDetalleCompras extends javax.swing.JInternalFrame {
         }        
     }//GEN-LAST:event_jBuscarActionPerformed
     
-    private void mostrarDetallesEnTabla(List<DetalleCompra> detalles) {
+    private void mostrarDetallesEnTabla(List<DetalleComprasDTO> detalles) {
         DefaultTableModel modelo = (DefaultTableModel) jTdetalles.getModel();
 
         // Limpia la tabla
         modelo.setRowCount(0);
         
-        for (DetalleCompra detalle : detalles) {
+        for (DetalleComprasDTO detalle : detalles) {
             Object[] fila = {
                 detalle.getIdCompra(),
-                detalle.getIdProveedor(),
+                detalle.getNombre(),
                 detalle.getPrecioCosto(),
                 detalle.getIdProducto(),
                 detalle.getCantidad()

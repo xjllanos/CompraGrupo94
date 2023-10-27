@@ -70,6 +70,12 @@ public class FormularioDeProveedores extends javax.swing.JInternalFrame {
             }
         });
 
+        jTTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTTelefonoKeyTyped(evt);
+            }
+        });
+
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
         jLabel1.setText("PROVEEDORES");
 
@@ -202,7 +208,8 @@ public class FormularioDeProveedores extends javax.swing.JInternalFrame {
             idProveedor = (Integer)modelo.getValueAt(filaSeleccionada,0) ;
             jTRazonSocial.setText((String)modelo.getValueAt(filaSeleccionada,1));
             jTDomicilio.setText((String)modelo.getValueAt(filaSeleccionada,2));
-            jTTelefono.setText(((Integer)modelo.getValueAt(filaSeleccionada,3)).toString());
+            //jTTelefono.setText(((Integer)modelo.getValueAt(filaSeleccionada,3)).toString());
+            jTTelefono.setText((modelo.getValueAt(filaSeleccionada,3)).toString());
             jREstado.setSelected(true);
         }
     }//GEN-LAST:event_jBModificiarActionPerformed
@@ -267,6 +274,19 @@ public class FormularioDeProveedores extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_jBEliminarActionPerformed
+
+    private void jTTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTTelefonoKeyTyped
+        // TEXTFIELD DE STOCK 
+        char car = evt.getKeyChar(); 
+        try{
+            if ( car < '0' || car > '9'){
+                evt.consume();
+            }
+        }catch (NumberFormatException nfe){
+            jTTelefono.setText("");
+            JOptionPane.showMessageDialog(null, "SOLO SE INGRESAN NUMEROS, INTENTE NUEVAMENTE ");
+        } 
+    }//GEN-LAST:event_jTTelefonoKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

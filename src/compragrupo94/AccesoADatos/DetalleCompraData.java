@@ -10,13 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import javax.swing.JOptionPane;
 
 public class DetalleCompraData {
 
     private List<DetalleCompra> detallesCompra;
     private Connection con;
+   
 
     public DetalleCompraData() {
+        
         con = Conexion.getConexion();
         detallesCompra = new ArrayList<>();
     }
@@ -99,42 +102,50 @@ public class DetalleCompraData {
     }
 
     public List<DetalleComprasDTO> buscarDetallesPorProveedorYFecha(String razonSocialProveedor, LocalDate fechaSeleccionada) {
-        List<DetalleComprasDTO> detallesEncontrados = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM DetalleCompra d "
-                    + "JOIN Compra c ON d.idCompra = c.idCompra "
-                    + "JOIN Proveedor p ON c.idProvedor = p.idProveedor "
-                    + "JOIN Producto pr ON pr.idProducto = d.idProducto "
-                    + "WHERE p.razonSocial = ? AND DATE(c.fecha) = ?";
+         List<DetalleComprasDTO> detallesEncontrados = new ArrayList<>();
+    try {
+        String sql = "SELECT * FROM DetalleCompra d "
+                + "JOIN Compra c ON d.idCompra = c.idCompra "
+                + "JOIN Proveedor p ON c.idProvedor = p.idProveedor "
+                + "JOIN Producto pr ON pr.idProducto = d.idProducto "
+                + "WHERE p.razonSocial = ? AND DATE(c.fecha) = ?";
 
-            PreparedStatement statement = con.prepareStatement(sql);
-            statement.setString(1, razonSocialProveedor);
-            Date fecha = Date.valueOf(fechaSeleccionada);
-            statement.setDate(2, fecha);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-
-                DetalleComprasDTO detalle = new  DetalleComprasDTO(
-                        resultSet.getInt("idDetalle"),
-                        resultSet.getInt("cantidad"),
-                        resultSet.getDouble("precioCosto"),
-                        resultSet.getInt("idCompra"),
-                        resultSet.getInt("idProducto")
-                );
-                detalle.setNombre(resultSet.getNString("nombreProducto"));
-                System.out.println(">>> Detalle de compra: { idDetalle: " + detalle.getIdDetalle()
-                        + ", cantidad: " + detalle.getCantidad()
-                        + ", precioCosto: " + detalle.getPrecioCosto()
-                        + ", compra: " + detalle.getIdCompra()
-                        + ", producto: " + detalle.getIdProducto()
-                        + " }"); // AGREGUE UN SOUT PARA QUE IMPRIMA EL MENSAJE Y MUESTRE EL DETALLE DE COMPRA 
-                detallesEncontrados.add(detalle);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Aquí puedes agregar un mensaje de error específico si lo deseas
+        PreparedStatement statement = con.prepareStatement(sql);
+        statement.setString(1, razonSocialProveedor);
+        Date fecha = Date.valueOf(fechaSeleccionada);
+        statement.setDate(2, fecha);
+        ResultSet resultSet = statement.executeQuery();
+        
+        boolean hasResults = false;
+        
+        while (resultSet.next()) {
+            hasResults = true;
+            DetalleComprasDTO detalle = new  DetalleComprasDTO(
+                    resultSet.getInt("idDetalle"),
+                    resultSet.getInt("cantidad"),
+                    resultSet.getDouble("precioCosto"),
+                    resultSet.getInt("idCompra"),
+                    resultSet.getInt("idProducto")
+            );
+            detalle.setNombre(resultSet.getNString("nombreProducto"));
+            System.out.println(">>> Detalle de compra: { idDetalle: " + detalle.getIdDetalle()
+                    + ", cantidad: " + detalle.getCantidad()
+                    + ", precioCosto: " + detalle.getPrecioCosto()
+                    + ", compra: " + detalle.getIdCompra()
+                    + ", producto: " + detalle.getIdProducto()
+                    + " }"); // AGREGUE UN SOUT PARA QUE IMPRIMA EL MENSAJE Y MUESTRE EL DETALLE DE COMPRA 
+            detallesEncontrados.add(detalle);
         }
-        return detallesEncontrados;
+        
+        if (!hasResults) {
+            System.out.println("No se encontraron detalles de compra para el proveedor y fecha especificados.");
+            JOptionPane.showMessageDialog(null, "No se encontraron detalles de compra para el proveedor y fecha especificados.", "Información", JOptionPane.INFORMATION_MESSAGE);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+           JOptionPane.showMessageDialog(null, "Ocurrió un error al buscar los detalles de compra.", "Error", JOptionPane.ERROR_MESSAGE);
     }
+    return detallesEncontrados;
 
+}
 }

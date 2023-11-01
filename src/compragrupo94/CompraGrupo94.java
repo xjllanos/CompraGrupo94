@@ -153,7 +153,7 @@ public class CompraGrupo94 {
         LocalDate fechaSeleccionada = LocalDate.of(2023, 10, 5); 
         List<DetalleComprasDTO> detallesEncontrados = detalleData.buscarDetallesPorProveedorYFecha(razonSocialProveedor, fechaSeleccionada);
         System.out.println("\nDetalles encontrados para el proveedor " + razonSocialProveedor + " y la fecha " + fechaSeleccionada + ":");
-        for (DetalleCompra detalle : detallesEncontrados) {
+        for (DetalleComprasDTO detalle : detallesEncontrados) {
             System.out.println(detalle);
         }
     }

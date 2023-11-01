@@ -36,8 +36,8 @@ public class FormularioDeCompras extends javax.swing.JInternalFrame {
     public FormularioDeCompras() {
         initComponents();
         compraData = new CompraData();
-        proveedorData = new ProveedorData(); // Asumiendo que tienes una clase ProveedorData para acceder a los proveedores
-        productoData = new ProductoData();   // Asumiendo que tienes una clase ProductoData para acceder a los productos
+        proveedorData = new ProveedorData(); 
+        productoData = new ProductoData();   
 
         cargarProveedores();
         cargarProductos();
